@@ -1,7 +1,6 @@
 {
     "name": "easy-g",
     "short_name": "easy-g",
-    "description": "Офлайн PWA-карточки по геометрии с интерактивной 3D-визуализацией.",
     "lang": "ru",
     "start_url": "./",
     "scope": "./",
@@ -10,16 +9,14 @@
     "theme_color": "#000000",
     "icons": [
         {
-            "src": "./img/icon-192.svg",
-            "sizes": "192x192",
-            "type": "image/svg+xml",
-            "purpose": "any maskable"
+        "src": "./img/UI.ico",
+        "sizes": "192x192",
+        "type": "image/x-icon"
         },
         {
-            "src": "./img/icon-512.svg",
-            "sizes": "512x512",
-            "type": "image/svg+xml",
-            "purpose": "any maskable"
+        "src": "./img/UI.ico",
+        "sizes": "512x512",
+        "type": "image/x-icon"
         }
     ]
 }
