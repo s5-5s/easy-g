@@ -1,49 +1,120 @@
 .topic-navigation {
     border: 0.0625rem solid color-mix(in srgb, var(--text), transparent 75%);
-    background: color-mix(in srgb, var(--bg), var(--text) 4%);
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--bg), var(--text) 6%);
+    backdrop-filter: blur(0.24rem);
 }
 
-.topic-close,
-.card-close {
-    width: 1.64rem;
-    height: 1.64rem;
-    border: none;
-    background: transparent;
+.topic-close {
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 0.0625rem solid color-mix(in srgb, var(--text), transparent 70%);
+    border-radius: 0.62rem;
+    background: color-mix(in srgb, var(--bg), var(--text) 9%);
     color: var(--text);
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.98rem;
     font-weight: 600;
     line-height: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    transition:
+        border-color 180ms ease,
+        color 180ms ease,
+        background-color 180ms ease;
+}
+
+.topic-close:hover {
+    border-color: color-mix(in srgb, var(--text), transparent 30%);
 }
 
 .topic-entry {
-    border: none;
-    background: transparent;
+    border: 0.0625rem solid color-mix(in srgb, var(--text), transparent 78%);
+    border-radius: 0.82rem;
+    background: color-mix(in srgb, var(--bg), var(--text) 2.5%);
     color: var(--text);
     text-align: left;
     cursor: pointer;
-    padding: 0.2rem 0.35rem;
-    font-size: 12pt;
-    line-height: 1.28;
+    width: 100%;
+    padding: 0.52rem 0.62rem;
+    font-size: 0.92rem;
+    line-height: 1.25;
     font-weight: 400;
+    transition:
+        border-color 180ms ease,
+        background-color 180ms ease,
+        color 180ms ease;
 }
 
 .topic-entry:hover,
 .topic-entry.is-active {
     color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent), transparent 36%);
+    background: color-mix(in srgb, var(--bg), var(--accent) 5%);
 }
 
 .topic-entry-grade {
-    font-size: 11.5pt;
+    font-size: 0.83rem;
     opacity: 0.75;
     display: block;
+    margin-bottom: 0.1rem;
 }
 
 .topic-entry-title {
-    font-size: 15pt;
+    font-size: 1.05rem;
     font-weight: 600;
     display: block;
+}
+
+.topic-detail-title {
+    border: 0.0625rem solid color-mix(in srgb, var(--text), transparent 72%);
+    border-radius: 0.82rem;
+    background: color-mix(in srgb, var(--bg), var(--text) 4%);
+    color: var(--text);
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    padding: 0.56rem 0.66rem;
+    font-size: 0.98rem;
+    line-height: 1.28;
+    font-weight: 700;
+    transition:
+        border-color 180ms ease,
+        color 180ms ease,
+        background-color 180ms ease;
+}
+
+.topic-detail-title:hover {
+    border-color: color-mix(in srgb, var(--text), transparent 40%);
+}
+
+.topic-detail-definition {
+    margin: 0;
+    font-size: 0.96rem;
+    line-height: 1.38;
+    font-weight: 400;
+}
+
+.topic-detail-properties {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.36rem;
+    font-size: 0.88rem;
+    line-height: 1.34;
+}
+
+.topic-detail-property::before {
+    content: "• ";
+    color: var(--accent);
+}
+
+.topic-detail-theorem {
+    margin: 0;
+    font-size: 0.91rem;
+    line-height: 1.34;
+    color: var(--accent);
+    font-weight: 600;
 }

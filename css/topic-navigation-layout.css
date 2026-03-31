@@ -1,45 +1,83 @@
 .topic-navigation {
     position: absolute;
     z-index: 7;
-    top: var(--nav-top, 4.25rem);
-    left: 0.75rem;
-    width: clamp(12rem, 23vw, 15.8rem);
-    max-height: min(46vh, 24rem);
-    overflow: auto;
+    top: var(--stage-edge, 0.75rem);
+    left: var(--stage-edge, 0.75rem);
+    width: var(--desktop-sidebar-width, clamp(16rem, 24vw, 21rem));
+    height: calc(100% - (var(--stage-edge, 0.75rem) * 2));
     display: none;
-    padding: 0.3rem 0;
+    padding: 0.45rem;
+    overflow: hidden;
 }
 
 .topic-navigation.is-open {
-    display: block;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 0.3rem;
 }
 
 .topic-navigation-head {
     display: flex;
     justify-content: flex-end;
-    padding: 0 0.2rem;
+    align-items: center;
 }
 
 .topic-navigation-list {
     display: grid;
-    gap: 0.16rem;
-    padding: 0.12rem 0.2rem;
+    align-content: start;
+    gap: 0.4rem;
+    min-height: 0;
+    overflow: auto;
+    padding: 0.1rem;
 }
 
-@media (max-width: 900px) and (orientation: portrait) {
+.topic-detail {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 0.48rem;
+    min-height: 0;
+}
+
+.topic-detail-content {
+    min-height: 0;
+    overflow: auto;
+    display: grid;
+    align-content: start;
+    gap: 0.58rem;
+    padding: 0.08rem;
+}
+
+.topic-navigation:not(.is-detail-open) .topic-detail {
+    display: none;
+}
+
+.topic-navigation.is-detail-open .topic-navigation-list {
+    display: none;
+}
+
+@media (max-width: 1100px) and (orientation: portrait) {
     .topic-navigation {
-        left: 0.5rem;
-        width: min(58vw, 16rem);
-        max-height: min(44vh, 20rem);
+        top: calc(var(--header-top, 0.5rem) + 2.25rem);
+        left: var(--stage-edge, 0.5rem);
+        width: min(72vw, 18rem);
+        height: auto;
+        max-height: min(66vh, 30rem);
     }
 }
 
-@media (max-width: 900px) and (orientation: landscape) {
+@media (max-width: 1100px) and (orientation: landscape) {
     .topic-navigation {
         left: 50%;
-        top: 3.25rem;
+        top: calc(var(--header-top, 0.5rem) + 2.2rem);
         transform: translateX(-50%);
-        width: min(72vw, 22rem);
-        max-height: min(40vh, 13rem);
+        width: min(76vw, 24rem);
+        height: auto;
+        max-height: min(58vh, 19rem);
+    }
+}
+
+@media (min-width: 1101px) {
+    .topic-navigation {
+        transform: none;
     }
 }

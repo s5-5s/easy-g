@@ -1,6 +1,7 @@
 .model-view {
     position: absolute;
     inset: 0;
+    transition: transform 260ms ease;
 }
 
 .model-view canvas {
@@ -9,20 +10,8 @@
     height: 100%;
 }
 
-.model-caption {
-    position: absolute;
-    right: 0.75rem;
-    bottom: 0.75rem;
-    z-index: 5;
-    margin: 0;
-    font-size: 12pt;
-    font-weight: 400;
-    pointer-events: none;
-}
-
-@media (max-width: 900px) {
-    .model-caption {
-        right: 0.5rem;
-        bottom: 0.5rem;
+@media (min-width: 1101px) {
+    .app.is-book-open .model-view {
+        transform: translateX(var(--desktop-shift, 0rem));
     }
 }

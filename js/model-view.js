@@ -6,9 +6,6 @@ class ModelView {
     /** @type {HTMLElement} */
     #rootElement;
 
-    /** @type {HTMLParagraphElement} */
-    #captionElement;
-
     /** @type {THREE.WebGLRenderer | undefined} */
     #rendererObject;
 
@@ -57,7 +54,6 @@ class ModelView {
     constructor(rootElement) {
         this.#rootElement = rootElement instanceof HTMLElement ? rootElement : document.createElement("div");
         this.#rootElement.classList.add("model-view");
-        this.#composeCaption();
     }
 
     /** @returns {HTMLElement} */
@@ -136,14 +132,6 @@ class ModelView {
 
         this.#sceneObject = undefined;
         this.#cameraObject = undefined;
-    }
-
-    /** @returns {void} */
-    #composeCaption() {
-        this.#captionElement = document.createElement("p");
-        this.#captionElement.className = "model-caption";
-        this.#captionElement.textContent = "rotate - drag · zoom - wheel";
-        this.#rootElement.append(this.#captionElement);
     }
 
     /** @returns {void} */
@@ -258,7 +246,6 @@ class ModelView {
 
             this.#replaceModel(modelDescription.groupObject);
             this.#applyView(modelDescription.cameraPosition, modelDescription.targetPosition);
-            this.#captionElement.textContent = getString(this.#topicObject, "title") || "geometry";
         } catch {
             this.#rootElement.classList.add("is-error");
         }

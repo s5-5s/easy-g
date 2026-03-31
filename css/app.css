@@ -1,12 +1,23 @@
 .app {
     background: var(--bg);
     color: var(--text);
+    --stage-edge: 0.75rem;
+    --desktop-sidebar-width: clamp(16rem, 24vw, 21rem);
+    --desktop-shift: calc(var(--desktop-sidebar-width) + 1.2rem);
 }
 
 .app.is-landscape {
-    --nav-top: 3.95rem;
+    --header-top: 0.62rem;
 }
 
 .app.is-portrait {
-    --nav-top: 4.25rem;
+    --header-top: 0.62rem;
+}
+
+@media (max-width: 1100px) {
+    .app {
+        --stage-edge: 0.5rem;
+        --header-top: 0.5rem;
+        --desktop-shift: 0rem;
+    }
 }

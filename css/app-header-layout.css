@@ -1,9 +1,9 @@
 .app-header {
     position: absolute;
     z-index: 6;
-    top: 0.62rem;
-    left: 0.62rem;
-    right: 0.62rem;
+    top: var(--header-top, 0.62rem);
+    left: var(--stage-edge, 0.62rem);
+    right: var(--stage-edge, 0.62rem);
     pointer-events: none;
     display: flex;
     justify-content: space-between;
@@ -12,12 +12,4 @@
 
 .control-button {
     pointer-events: auto;
-}
-
-@media (max-width: 900px) {
-    .app-header {
-        top: 0.5rem;
-        left: 0.5rem;
-        right: 0.5rem;
-    }
 }

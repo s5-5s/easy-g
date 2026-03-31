@@ -1,6 +1,5 @@
 import {AppHeader} from "./app-header.js";
 import {TopicNavigation} from "./topic-navigation.js";
-import {LessonPanel} from "./lesson-panel.js";
 import {ModelView} from "./model-view.js";
 import {getAllTopics, getTopicById} from "./geometry-topics.js";
 
@@ -8,7 +7,7 @@ const APP_SELECTOR = "[data-app]";
 const HEADER_SELECTOR = "[data-app-header]";
 const NAVIGATION_SELECTOR = "[data-topic-navigation]";
 const MODEL_SELECTOR = "[data-model-view]";
-const LESSON_SELECTOR = "[data-lesson-panel]";
+const UI_STATE_STORAGE_KEY = "easy-g-ui-state-v2";
 
 class EasyGApp {
     /** @type {HTMLElement} */
@@ -20,16 +19,13 @@ class EasyGApp {
     /** @type {TopicNavigation} */
     #navigationComponent;
 
-    /** @type {LessonPanel} */
-    #lessonComponent;
-
     /** @type {ModelView} */
     #modelComponent;
 
     /** @type {Array<object>} */
     #topics = [];
 
-    /** @type {{theme: string, isBookOpen: boolean, activeTopicId: string, isCardOpen: boolean, isLandscape: boolean}} */
+    /** @type {{theme: string, isBookOpen: boolean, activeTopicId: string, isTopicOpen: boolean, isLandscape: boolean}} */
     #state;
 
     /** @type {(() => void) | undefined} */
@@ -49,7 +45,6 @@ class EasyGApp {
         let headerElement = this.#rootElement.querySelector(HEADER_SELECTOR);
         let navigationElement = this.#rootElement.querySelector(NAVIGATION_SELECTOR);
         let modelElement = this.#rootElement.querySelector(MODEL_SELECTOR);
-        let lessonElement = this.#rootElement.querySelector(LESSON_SELECTOR);
 
         this.#headerComponent = new AppHeader(
             headerElement instanceof HTMLElement ? headerElement : undefined
@@ -57,21 +52,22 @@ class EasyGApp {
         this.#navigationComponent = new TopicNavigation(
             navigationElement instanceof HTMLElement ? navigationElement : undefined
         );
-        this.#lessonComponent = new LessonPanel(
-            lessonElement instanceof HTMLElement ? lessonElement : undefined
-        );
         this.#modelComponent = new ModelView(
             modelElement instanceof HTMLElement ? modelElement : undefined
         );
 
         this.#topics = [...getAllTopics()];
         let defaultTopicId = this.#topics[0]?.id;
+        let persistedState = this.#readPersistedState();
 
         this.#state = {
-            theme: "dark",
+            theme: persistedState.theme === "light" ? "light" : "dark",
             isBookOpen: false,
-            activeTopicId: typeof defaultTopicId === "string" ? defaultTopicId : "",
-            isCardOpen: false,
+            activeTopicId: this.#resolveTopicIdentifier(
+                persistedState.activeTopicId,
+                typeof defaultTopicId === "string" ? defaultTopicId : ""
+            ),
+            isTopicOpen: false,
             isLandscape: this.#readLandscape()
         };
 
@@ -91,13 +87,13 @@ class EasyGApp {
 
         this.#headerComponent.initialize();
         this.#navigationComponent.initialize();
-        this.#lessonComponent.initialize();
         this.#modelComponent.initialize();
 
         this.#navigationComponent.setTopics(this.#topics);
 
         this.#headerComponent.onBookToggle(() => {
             this.#state.isBookOpen = !this.#state.isBookOpen;
+            this.#state.isTopicOpen = false;
             this.#renderState();
         });
 
@@ -108,22 +104,24 @@ class EasyGApp {
 
         this.#navigationComponent.onClose(() => {
             this.#state.isBookOpen = false;
+            this.#state.isTopicOpen = false;
             this.#renderState();
         });
 
         this.#navigationComponent.onTopicSelect((topicIdentifier) => {
-            if (this.#state.activeTopicId === topicIdentifier && this.#state.isCardOpen) {
-                this.#state.isCardOpen = false;
+            if (this.#state.activeTopicId === topicIdentifier && this.#state.isTopicOpen) {
+                this.#state.isTopicOpen = false;
             } else {
                 this.#state.activeTopicId = topicIdentifier;
-                this.#state.isCardOpen = true;
+                this.#state.isBookOpen = true;
+                this.#state.isTopicOpen = true;
             }
 
             this.#renderState();
         });
 
-        this.#lessonComponent.onClose(() => {
-            this.#state.isCardOpen = false;
+        this.#navigationComponent.onDetailToggle(() => {
+            this.#state.isTopicOpen = false;
             this.#renderState();
         });
 
@@ -153,6 +151,7 @@ class EasyGApp {
         }
 
         this.#modelComponent.destroy();
+        this.#saveState();
         this.#initialized = false;
     }
 
@@ -168,8 +167,7 @@ class EasyGApp {
         stageElement.replaceChildren(
             this.#modelComponent.element,
             this.#headerComponent.element,
-            this.#navigationComponent.element,
-            this.#lessonComponent.element
+            this.#navigationComponent.element
         );
 
         this.#rootElement.replaceChildren(stageElement);
@@ -184,6 +182,8 @@ class EasyGApp {
         this.#rootElement.classList.toggle("theme-light", !isDark);
         this.#rootElement.classList.toggle("is-landscape", this.#state.isLandscape);
         this.#rootElement.classList.toggle("is-portrait", !this.#state.isLandscape);
+        this.#rootElement.classList.toggle("is-book-open", this.#state.isBookOpen);
+        this.#rootElement.classList.toggle("is-topic-open", this.#state.isTopicOpen);
 
         document.body.classList.toggle("theme-dark", isDark);
         document.body.classList.toggle("theme-light", !isDark);
@@ -193,19 +193,82 @@ class EasyGApp {
 
         this.#navigationComponent.setOpen(this.#state.isBookOpen);
         this.#navigationComponent.setActiveTopic(this.#state.activeTopicId);
-
-        this.#lessonComponent.setOpen(this.#state.isCardOpen);
-        this.#lessonComponent.setBookOpen(this.#state.isBookOpen);
-        this.#lessonComponent.setTopic(currentTopic);
+        this.#navigationComponent.setDetailOpen(this.#state.isTopicOpen);
 
         this.#modelComponent.setTheme(this.#state.theme);
         this.#modelComponent.setTopic(currentTopic);
+
+        this.#saveState();
     }
 
     /** @returns {boolean} */
     #readLandscape() {
         return window.matchMedia("(orientation: landscape)").matches;
     }
+
+    /**
+     * @param {string | undefined} topicIdentifier
+     * @param {string} fallbackIdentifier
+     * @returns {string}
+     */
+    #resolveTopicIdentifier(topicIdentifier, fallbackIdentifier) {
+        if (typeof topicIdentifier !== "string" || topicIdentifier.length < 1) {
+            return fallbackIdentifier;
+        }
+
+        let topicExists = this.#topics.some((topicObject) => getString(topicObject, "id") === topicIdentifier);
+        return topicExists ? topicIdentifier : fallbackIdentifier;
+    }
+
+    /** @returns {{theme?: string, activeTopicId?: string}} */
+    #readPersistedState() {
+        if (typeof window === "undefined" || !window.localStorage) {
+            return {};
+        }
+
+        try {
+            let savedRaw = window.localStorage.getItem(UI_STATE_STORAGE_KEY);
+            if (!savedRaw) {
+                return {};
+            }
+
+            let parsedValue = JSON.parse(savedRaw);
+            if (typeof parsedValue !== "object" || parsedValue === null) {
+                return {};
+            }
+
+            return parsedValue;
+        } catch {
+            return {};
+        }
+    }
+
+    /** @returns {void} */
+    #saveState() {
+        if (typeof window === "undefined" || !window.localStorage) {
+            return;
+        }
+
+        try {
+            let savedState = {
+                theme: this.#state.theme,
+                activeTopicId: this.#state.activeTopicId
+            };
+            window.localStorage.setItem(UI_STATE_STORAGE_KEY, JSON.stringify(savedState));
+        } catch {
+            return;
+        }
+    }
+}
+
+/**
+ * @param {object | undefined} sourceObject
+ * @param {string} keyName
+ * @returns {string}
+ */
+function getString(sourceObject, keyName) {
+    let value = sourceObject?.[keyName];
+    return typeof value === "string" ? value : "";
 }
 
 export {EasyGApp};

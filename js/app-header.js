@@ -69,8 +69,13 @@ class AppHeader {
      * @returns {void}
      */
     setBookOpen(isOpen) {
-        this.#bookButton.classList.toggle("is-active", Boolean(isOpen));
-        this.#bookButton.setAttribute("aria-pressed", String(Boolean(isOpen)));
+        let isBookOpen = Boolean(isOpen);
+        this.#bookButton.classList.toggle("is-active", isBookOpen);
+        this.#bookButton.setAttribute("aria-pressed", String(isBookOpen));
+        this.#bookButton.setAttribute(
+            "aria-label",
+            isBookOpen ? "Закрыть список тем" : "Открыть список тем"
+        );
     }
 
     /**
@@ -79,7 +84,7 @@ class AppHeader {
      */
     setTheme(themeValue) {
         let isDark = themeValue === "dark";
-        this.#themeButton.textContent = isDark ? "◑" : "◐";
+        this.#themeButton.textContent = isDark ? "☾" : "☀";
         this.#themeButton.setAttribute(
             "aria-label",
             isDark ? "Переключить на светлую тему" : "Переключить на тёмную тему"
@@ -98,7 +103,7 @@ class AppHeader {
         this.#themeButton = document.createElement("button");
         this.#themeButton.type = "button";
         this.#themeButton.className = "control-button control-theme";
-        this.#themeButton.textContent = "◑";
+        this.#themeButton.textContent = "☾";
         this.#themeButton.setAttribute("aria-label", "Переключить тему");
 
         this.#rootElement.replaceChildren(this.#bookButton, this.#themeButton);

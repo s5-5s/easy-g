@@ -1,4 +1,4 @@
-const CACHE_NAME = "easy-g-cache-v1";
+const CACHE_NAME = "easy-g-cache-v3";
 
 const PRECACHE_URLS = [
     "./",
@@ -16,44 +16,49 @@ const PRECACHE_URLS = [
     "./css/topic-navigation.css",
     "./css/model-view-layout.css",
     "./css/model-view.css",
-    "./css/lesson-panel-layout.css",
-    "./css/lesson-panel.css",
     "./js/index.js",
     "./js/easy-g-app.js",
     "./js/app-header.js",
     "./js/topic-navigation.js",
     "./js/model-view.js",
-    "./js/lesson-panel.js",
     "./js/geometry-topics.js",
     "./js/geometry-model-factory.js",
     "./js/vendor/three.module.js",
     "./js/vendor/OrbitControls.js",
-    "./fonts/europe-ext-normal.woff",
-    "./img/icon-192.svg",
-    "./img/icon-512.svg"
+    "./img/UI.ico",
+    "./fonts/europe-ext-normal.woff"
 ];
 
 self.addEventListener("install", (event) => {
     event.waitUntil(
-        caches
-            .open(CACHE_NAME)
-            .then((cacheStorage) => cacheStorage.addAll(PRECACHE_URLS))
-            .then(() => self.skipWaiting())
+        (async () => {
+            let cacheStorage = await caches.open(CACHE_NAME);
+
+            await Promise.allSettled(
+                PRECACHE_URLS.map(async (precacheUrl) => {
+                    let requestObject = new Request(precacheUrl, {cache: "reload"});
+                    let responseObject = await fetch(requestObject);
+                    if (responseObject.ok) {
+                        await cacheStorage.put(precacheUrl, responseObject);
+                    }
+                })
+            );
+
+            await self.skipWaiting();
+        })()
     );
 });
 
 self.addEventListener("activate", (event) => {
     event.waitUntil(
-        caches
-            .keys()
-            .then((cacheKeys) =>
-                Promise.all(
-                    cacheKeys
-                        .filter((cacheKey) => cacheKey !== CACHE_NAME)
-                        .map((cacheKey) => caches.delete(cacheKey))
-                )
-            )
-            .then(() => self.clients.claim())
+        (async () => {
+            let cacheKeys = await caches.keys();
+            let cachesToDelete = cacheKeys.filter(
+                (cacheKey) => cacheKey.startsWith("easy-g-cache-") && cacheKey !== CACHE_NAME
+            );
+            await Promise.all(cachesToDelete.map((cacheKey) => caches.delete(cacheKey)));
+            await self.clients.claim();
+        })()
     );
 });
 
@@ -65,26 +70,31 @@ self.addEventListener("fetch", (event) => {
         return;
     }
 
-    event.respondWith(cacheFirst(requestObject));
+    if (requestObject.mode === "navigate") {
+        event.respondWith(networkFirst(requestObject));
+        return;
+    }
+
+    event.respondWith(staleWhileRevalidate(event, requestObject));
 });
 
-async function cacheFirst(requestObject) {
-    let cacheMatch = await caches.match(requestObject);
-    if (cacheMatch) {
-        return cacheMatch;
-    }
+async function networkFirst(requestObject) {
+    let cacheStorage = await caches.open(CACHE_NAME);
 
     try {
         let networkResponse = await fetch(requestObject);
-        if (networkResponse && networkResponse.ok) {
-            let responseClone = networkResponse.clone();
-            let cacheStorage = await caches.open(CACHE_NAME);
-            await cacheStorage.put(requestObject, responseClone);
+        if (networkResponse.ok) {
+            await cacheStorage.put(requestObject, networkResponse.clone());
         }
 
         return networkResponse;
     } catch {
-        let fallbackResponse = await caches.match("./index.html");
+        let cachedResponse = await cacheStorage.match(requestObject);
+        if (cachedResponse) {
+            return cachedResponse;
+        }
+
+        let fallbackResponse = await cacheStorage.match("./index.html");
         if (fallbackResponse) {
             return fallbackResponse;
         }
@@ -94,4 +104,34 @@ async function cacheFirst(requestObject) {
             statusText: "Offline"
         });
     }
+}
+
+async function staleWhileRevalidate(event, requestObject) {
+    let cacheStorage = await caches.open(CACHE_NAME);
+    let cachedResponse = await cacheStorage.match(requestObject);
+
+    let networkPromise = fetch(requestObject)
+        .then(async (networkResponse) => {
+            if (networkResponse.ok) {
+                await cacheStorage.put(requestObject, networkResponse.clone());
+            }
+
+            return networkResponse;
+        })
+        .catch(() => undefined);
+
+    if (cachedResponse) {
+        event.waitUntil(networkPromise);
+        return cachedResponse;
+    }
+
+    let networkResponse = await networkPromise;
+    if (networkResponse) {
+        return networkResponse;
+    }
+
+    return new Response("Offline", {
+        status: 503,
+        statusText: "Offline"
+    });
 }

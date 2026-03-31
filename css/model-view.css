@@ -2,11 +2,6 @@
     background: var(--bg);
 }
 
-.model-caption {
-    color: var(--text);
-    text-shadow: 0 0 0.1rem color-mix(in srgb, var(--bg), transparent 40%);
-}
-
 .model-view.is-loading::after,
 .model-view.is-error::after {
     position: absolute;

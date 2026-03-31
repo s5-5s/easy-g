@@ -8,17 +8,41 @@ class TopicNavigation {
     /** @type {HTMLElement} */
     #listElement;
 
+    /** @type {HTMLElement} */
+    #detailElement;
+
+    /** @type {HTMLButtonElement} */
+    #detailTitleButton;
+
+    /** @type {HTMLParagraphElement} */
+    #detailDefinitionElement;
+
+    /** @type {HTMLUListElement} */
+    #detailPropertiesElement;
+
+    /** @type {HTMLParagraphElement} */
+    #detailTheoremElement;
+
     /** @type {HTMLButtonElement} */
     #closeButton;
 
     /** @type {Array<object>} */
     #topics = [];
 
+    /** @type {Map<string, object>} */
+    #topicsMap = new Map();
+
     /** @type {string} */
     #activeTopicIdentifier = "";
 
+    /** @type {boolean} */
+    #isDetailOpen = false;
+
     /** @type {(topicIdentifier: string) => void | undefined} */
     #topicSelectHandler;
+
+    /** @type {(() => void) | undefined} */
+    #detailToggleHandler;
 
     /** @type {(() => void) | undefined} */
     #closeHandler;
@@ -50,6 +74,10 @@ class TopicNavigation {
             this.#closeHandler?.();
         });
 
+        this.#detailTitleButton.addEventListener("click", () => {
+            this.#detailToggleHandler?.();
+        });
+
         this.#listElement.addEventListener("click", (eventObject) => {
             let targetElement = eventObject.target;
             if (!(targetElement instanceof Element)) {
@@ -78,7 +106,12 @@ class TopicNavigation {
      */
     setTopics(topics) {
         this.#topics = Array.isArray(topics) ? topics : [];
+        this.#topicsMap = new Map(
+            this.#topics.map((topicObject) => [getString(topicObject, "id"), topicObject])
+        );
+
         this.#render();
+        this.#renderDetail();
     }
 
     /**
@@ -88,6 +121,17 @@ class TopicNavigation {
     setOpen(isOpen) {
         this.#rootElement.classList.toggle("is-open", Boolean(isOpen));
         this.#rootElement.setAttribute("aria-hidden", String(!Boolean(isOpen)));
+        this.#rootElement.setAttribute("aria-expanded", String(Boolean(isOpen)));
+    }
+
+    /**
+     * @param {boolean} isOpen
+     * @returns {void}
+     */
+    setDetailOpen(isOpen) {
+        this.#isDetailOpen = Boolean(isOpen);
+        this.#rootElement.classList.toggle("is-detail-open", this.#isDetailOpen);
+        this.#detailTitleButton.setAttribute("aria-expanded", String(this.#isDetailOpen));
     }
 
     /**
@@ -107,6 +151,8 @@ class TopicNavigation {
             topicButton.classList.toggle("is-active", isActive);
             topicButton.setAttribute("aria-pressed", String(isActive));
         });
+
+        this.#renderDetail();
     }
 
     /**
@@ -115,6 +161,14 @@ class TopicNavigation {
      */
     onTopicSelect(handler) {
         this.#topicSelectHandler = handler;
+    }
+
+    /**
+     * @param {(() => void) | undefined} handler
+     * @returns {void}
+     */
+    onDetailToggle(handler) {
+        this.#detailToggleHandler = handler;
     }
 
     /**
@@ -141,7 +195,36 @@ class TopicNavigation {
         this.#listElement = document.createElement("div");
         this.#listElement.className = "topic-navigation-list";
 
-        this.#rootElement.replaceChildren(headElement, this.#listElement);
+        this.#detailElement = document.createElement("section");
+        this.#detailElement.className = "topic-detail";
+
+        this.#detailTitleButton = document.createElement("button");
+        this.#detailTitleButton.type = "button";
+        this.#detailTitleButton.className = "topic-detail-title";
+        this.#detailTitleButton.setAttribute("aria-expanded", "false");
+        this.#detailTitleButton.setAttribute("aria-label", "Вернуться к списку тем");
+
+        let detailContentElement = document.createElement("div");
+        detailContentElement.className = "topic-detail-content";
+
+        this.#detailDefinitionElement = document.createElement("p");
+        this.#detailDefinitionElement.className = "topic-detail-definition";
+
+        this.#detailPropertiesElement = document.createElement("ul");
+        this.#detailPropertiesElement.className = "topic-detail-properties";
+
+        this.#detailTheoremElement = document.createElement("p");
+        this.#detailTheoremElement.className = "topic-detail-theorem";
+
+        detailContentElement.append(
+            this.#detailDefinitionElement,
+            this.#detailPropertiesElement,
+            this.#detailTheoremElement
+        );
+
+        this.#detailElement.append(this.#detailTitleButton, detailContentElement);
+
+        this.#rootElement.replaceChildren(headElement, this.#listElement, this.#detailElement);
     }
 
     /** @returns {void} */
@@ -172,6 +255,30 @@ class TopicNavigation {
         });
 
         this.setActiveTopic(this.#activeTopicIdentifier);
+    }
+
+    /** @returns {void} */
+    #renderDetail() {
+        let topicObject = this.#topicsMap.get(this.#activeTopicIdentifier) ?? this.#topics[0];
+        let titleText = getString(topicObject, "title");
+        let gradeText = getString(topicObject, "grade");
+        let detailTitleText = [gradeText, titleText].filter((valueText) => valueText.length > 0).join(" — ");
+
+        this.#detailTitleButton.textContent = detailTitleText || "Тема";
+        this.#detailDefinitionElement.textContent = getString(topicObject, "definition");
+
+        this.#detailPropertiesElement.replaceChildren();
+        let propertiesValue = Array.isArray(topicObject?.properties) ? topicObject.properties : [];
+        propertiesValue.forEach((propertyText) => {
+            let itemElement = document.createElement("li");
+            itemElement.className = "topic-detail-property";
+            itemElement.textContent = String(propertyText);
+            this.#detailPropertiesElement.append(itemElement);
+        });
+
+        let theoremText = getString(topicObject, "theorem");
+        this.#detailTheoremElement.textContent = theoremText;
+        this.#detailTheoremElement.hidden = theoremText.length < 1;
     }
 }
 

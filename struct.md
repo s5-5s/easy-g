@@ -17,20 +17,20 @@
 - `vars.css`, `base.css` — тема, шрифты и базовые правила.
 - `app-layout.css`, `app.css` — корневая сцена приложения.
 - `app-header-layout.css`, `app-header.css` — верхние кнопки (book/theme).
-- `topic-navigation-layout.css`, `topic-navigation.css` — оверлей списка тем.
-- `lesson-panel-layout.css`, `lesson-panel.css` — оверлей карточки темы.
+- `topic-navigation-layout.css`, `topic-navigation.css` — единый sidebar (список тем + подробности темы).
 - `model-view-layout.css`, `model-view.css` — область рендера модели.
+- `lesson-panel-layout.css`, `lesson-panel.css` — legacy-файлы старой отдельной карточки (не подключаются в `layout.css`).
 
 ## Каталог `js`
 
 - `index.js` — bootstrap и регистрация SW.
 - `easy-g-app.js` — общий state и оркестрация UI.
 - `app-header.js` — кнопки `book` и `theme`.
-- `topic-navigation.js` — список тем и выбор темы.
-- `lesson-panel.js` — карточка: definition/properties/theorem.
+- `topic-navigation.js` — sidebar: список тем и встроенная карточка темы.
 - `model-view.js` — scene/camera/controls/render.
 - `geometry-topics.js` — данные тем.
 - `geometry-model-factory.js` — фабрика 3D-моделей тем.
+- `lesson-panel.js` — legacy-класс старой отдельной карточки.
 
 ## Каталог `js/vendor`
 
