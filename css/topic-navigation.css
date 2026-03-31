@@ -1,0 +1,49 @@
+.topic-navigation {
+    border: 0.0625rem solid color-mix(in srgb, var(--text), transparent 75%);
+    background: color-mix(in srgb, var(--bg), var(--text) 4%);
+}
+
+.topic-close,
+.card-close {
+    width: 1.64rem;
+    height: 1.64rem;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topic-entry {
+    border: none;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+    padding: 0.2rem 0.35rem;
+    font-size: 12pt;
+    line-height: 1.28;
+    font-weight: 400;
+}
+
+.topic-entry:hover,
+.topic-entry.is-active {
+    color: var(--accent);
+}
+
+.topic-entry-grade {
+    font-size: 11.5pt;
+    opacity: 0.75;
+    display: block;
+}
+
+.topic-entry-title {
+    font-size: 15pt;
+    font-weight: 600;
+    display: block;
+}

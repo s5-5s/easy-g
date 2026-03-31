@@ -1,0 +1,12 @@
+.app {
+    background: var(--bg);
+    color: var(--text);
+}
+
+.app.is-landscape {
+    --nav-top: 3.95rem;
+}
+
+.app.is-portrait {
+    --nav-top: 4.25rem;
+}

@@ -1,0 +1,28 @@
+.model-view {
+    position: absolute;
+    inset: 0;
+}
+
+.model-view canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.model-caption {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    z-index: 5;
+    margin: 0;
+    font-size: 12pt;
+    font-weight: 400;
+    pointer-events: none;
+}
+
+@media (max-width: 900px) {
+    .model-caption {
+        right: 0.5rem;
+        bottom: 0.5rem;
+    }
+}

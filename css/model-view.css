@@ -1,0 +1,28 @@
+.model-view {
+    background: var(--bg);
+}
+
+.model-caption {
+    color: var(--text);
+    text-shadow: 0 0 0.1rem color-mix(in srgb, var(--bg), transparent 40%);
+}
+
+.model-view.is-loading::after,
+.model-view.is-error::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.84rem;
+    font-weight: 400;
+    color: var(--text);
+}
+
+.model-view.is-loading::after {
+    content: "loading model";
+}
+
+.model-view.is-error::after {
+    content: "model render error";
+    color: var(--accent);
+}

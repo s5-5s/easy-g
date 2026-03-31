@@ -1,0 +1,24 @@
+.control-button {
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    border: 0.0625rem solid color-mix(in srgb, var(--text), transparent 65%);
+    background: color-mix(in srgb, var(--bg), var(--text) 8%);
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    font-weight: 600;
+}
+
+.control-button:hover {
+    border-color: color-mix(in srgb, var(--text), transparent 35%);
+}
+
+.control-button.is-active {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent), transparent 25%);
+}
