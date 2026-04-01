@@ -1,5 +1,6 @@
 const TOPIC_IDENTIFIER_ATTRIBUTE = "data-topic-id";
 const TOPIC_SELECTOR = `[${TOPIC_IDENTIFIER_ATTRIBUTE}]`;
+const INTERACTIVE_SELECTOR = "button, a, input, select, textarea, label";
 
 class TopicNavigation {
     /** @type {HTMLElement} */
@@ -97,6 +98,33 @@ class TopicNavigation {
             this.#topicSelectHandler?.(topicIdentifier);
         });
 
+        this.#rootElement.addEventListener("click", (eventObject) => {
+            if (!this.#isCompactViewport()) {
+                return;
+            }
+
+            let targetElement = eventObject.target;
+            if (!(targetElement instanceof Element)) {
+                return;
+            }
+
+            if (targetElement.closest(INTERACTIVE_SELECTOR)) {
+                return;
+            }
+
+            let isFreeAreaClick =
+                targetElement === this.#rootElement ||
+                targetElement === this.#listElement ||
+                targetElement === this.#detailElement ||
+                targetElement.classList.contains("topic-navigation-head") ||
+                targetElement.classList.contains("topic-detail-content");
+            if (!isFreeAreaClick) {
+                return;
+            }
+
+            this.#closeHandler?.();
+        });
+
         this.#initialized = true;
     }
 
@@ -187,8 +215,8 @@ class TopicNavigation {
         this.#closeButton = document.createElement("button");
         this.#closeButton.type = "button";
         this.#closeButton.className = "topic-close";
-        this.#closeButton.textContent = "✕";
-        this.#closeButton.setAttribute("aria-label", "Закрыть список тем");
+        this.#closeButton.textContent = "☰";
+        this.#closeButton.setAttribute("aria-label", "Скрыть список тем");
 
         headElement.append(this.#closeButton);
 
@@ -225,6 +253,15 @@ class TopicNavigation {
         this.#detailElement.append(this.#detailTitleButton, detailContentElement);
 
         this.#rootElement.replaceChildren(headElement, this.#listElement, this.#detailElement);
+    }
+
+    /** @returns {boolean} */
+    #isCompactViewport() {
+        if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+            return false;
+        }
+
+        return window.matchMedia("(max-width: 1100px)").matches;
     }
 
     /** @returns {void} */

@@ -1,8 +1,7 @@
 :root {
     --bg: #000000;
     --text: #ffffff;
-    --accent: #ff453a;
-    --model-gray: #8e8e93;
+    --accent: #ff3b30;
     --font-ui: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
     --text-title: 1.36rem;
     --text-main: 1rem;
@@ -14,13 +13,11 @@ body.theme-light,
     --bg: #ffffff;
     --text: #000000;
     --accent: #ff3b30;
-    --model-gray: #8e8e93;
 }
 
 body.theme-dark,
 .app.theme-dark {
     --bg: #000000;
     --text: #ffffff;
-    --accent: #ff453a;
-    --model-gray: #8e8e93;
+    --accent: #ff3b30;
 }

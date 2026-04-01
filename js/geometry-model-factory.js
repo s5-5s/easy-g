@@ -4,11 +4,12 @@
  */
 export function createThemePalette(themeValue) {
     let isDark = themeValue === "dark";
+    let baseColor = isDark ? 0xffffff : 0x000000;
 
     return {
-        baseColor: isDark ? 0xffffff : 0x000000,
-        accentColor: isDark ? 0xff453a : 0xff3b30,
-        grayColor: 0x8e8e93,
+        baseColor,
+        accentColor: 0xff3b30,
+        grayColor: baseColor,
         textColorCss: isDark ? "#ffffff" : "#000000"
     };
 }
@@ -20,24 +21,8 @@ export function createThemePalette(themeValue) {
  * @returns {{groupObject: import("./vendor/three.module.js").Group, cameraPosition: import("./vendor/three.module.js").Vector3, targetPosition: import("./vendor/three.module.js").Vector3}}
  */
 export function createTopicModel(modelKey, THREE, paletteObject) {
-    switch (modelKey) {
-        case "cube-section":
-            return createCubeSectionModel(THREE, paletteObject);
-        case "triangle-sum":
-            return createTriangleSumModel(THREE, paletteObject);
-        case "circle-chord":
-            return createCircleChordModel(THREE, paletteObject);
-        case "parallel-transversal":
-            return createParallelTransversalModel(THREE, paletteObject);
-        case "triangle-similarity":
-            return createTriangleSimilarityModel(THREE, paletteObject);
-        case "pythagoras":
-            return createPythagorasModel(THREE, paletteObject);
-        case "line-and-plane":
-            return createLinePlaneModel(THREE, paletteObject);
-        default:
-            return createCubeSectionModel(THREE, paletteObject);
-    }
+    void modelKey;
+    return createCubeSectionModel(THREE, paletteObject);
 }
 
 /**
@@ -89,9 +74,9 @@ function createCubeSectionModel(THREE, paletteObject) {
     let sectionPlane = new THREE.Mesh(
         new THREE.PlaneGeometry(3.2, 3.2),
         new THREE.MeshBasicMaterial({
-            color: paletteObject.grayColor,
+            color: paletteObject.accentColor,
             transparent: true,
-            opacity: 0.12,
+            opacity: 0.16,
             side: THREE.DoubleSide,
             depthWrite: false
         })
@@ -296,9 +281,9 @@ function createLinePlaneModel(THREE, paletteObject) {
     let planeObject = new THREE.Mesh(
         new THREE.PlaneGeometry(6.2, 6.2),
         new THREE.MeshBasicMaterial({
-            color: paletteObject.grayColor,
+            color: paletteObject.accentColor,
             transparent: true,
-            opacity: 0.18,
+            opacity: 0.16,
             side: THREE.DoubleSide,
             depthWrite: false
         })

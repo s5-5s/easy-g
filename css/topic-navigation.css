@@ -1,17 +1,16 @@
 .topic-navigation {
-    border: 0.0625rem solid color-mix(in srgb, var(--text), transparent 75%);
+    border: 0.0625rem solid var(--text);
     border-radius: 1rem;
-    background: color-mix(in srgb, var(--bg), var(--text) 6%);
-    backdrop-filter: blur(0.24rem);
+    background: var(--bg);
 }
 
 .topic-close {
-    width: 1.75rem;
-    height: 1.75rem;
-    border: 0.0625rem solid color-mix(in srgb, var(--text), transparent 70%);
-    border-radius: 0.62rem;
-    background: color-mix(in srgb, var(--bg), var(--text) 9%);
-    color: var(--text);
+    width: 2.2rem;
+    height: 2.2rem;
+    border: 0.0625rem solid var(--accent);
+    border-radius: 0.74rem;
+    background: var(--bg);
+    color: var(--accent);
     cursor: pointer;
     font-size: 0.98rem;
     font-weight: 600;
@@ -26,13 +25,13 @@
 }
 
 .topic-close:hover {
-    border-color: color-mix(in srgb, var(--text), transparent 30%);
+    border-color: var(--text);
 }
 
 .topic-entry {
-    border: 0.0625rem solid color-mix(in srgb, var(--text), transparent 78%);
+    border: 0.0625rem solid var(--text);
     border-radius: 0.82rem;
-    background: color-mix(in srgb, var(--bg), var(--text) 2.5%);
+    background: var(--bg);
     color: var(--text);
     text-align: left;
     cursor: pointer;
@@ -49,14 +48,14 @@
 
 .topic-entry:hover,
 .topic-entry.is-active {
-    color: var(--accent);
-    border-color: color-mix(in srgb, var(--accent), transparent 36%);
-    background: color-mix(in srgb, var(--bg), var(--accent) 5%);
+    color: var(--bg);
+    border-color: var(--accent);
+    background: var(--accent);
 }
 
 .topic-entry-grade {
     font-size: 0.83rem;
-    opacity: 0.75;
+    opacity: 1;
     display: block;
     margin-bottom: 0.1rem;
 }
@@ -68,9 +67,9 @@
 }
 
 .topic-detail-title {
-    border: 0.0625rem solid color-mix(in srgb, var(--text), transparent 72%);
+    border: 0.0625rem solid var(--text);
     border-radius: 0.82rem;
-    background: color-mix(in srgb, var(--bg), var(--text) 4%);
+    background: var(--bg);
     color: var(--text);
     cursor: pointer;
     width: 100%;
@@ -86,7 +85,7 @@
 }
 
 .topic-detail-title:hover {
-    border-color: color-mix(in srgb, var(--text), transparent 40%);
+    border-color: var(--accent);
 }
 
 .topic-detail-definition {
@@ -117,4 +116,11 @@
     line-height: 1.34;
     color: var(--accent);
     font-weight: 600;
+}
+
+@media (max-width: 1100px) {
+    .topic-navigation {
+        border-radius: 0;
+        border: none;
+    }
 }

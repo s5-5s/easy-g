@@ -1,6 +1,6 @@
 .lesson-panel {
     color: var(--text);
-    text-shadow: 0 0 0.1rem color-mix(in srgb, var(--bg), transparent 40%);
+    text-shadow: none;
 }
 
 .lesson-title {
