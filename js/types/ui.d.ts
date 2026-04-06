@@ -1,5 +1,5 @@
 export declare class RadomirUi {
-    constructor(binderTopics: any);
+    constructor(appRootElement?: HTMLElement | undefined);
     get element(): HTMLElement;
     initialize(): void;
     destroy(): void;

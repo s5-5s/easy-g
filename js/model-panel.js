@@ -3,10 +3,10 @@ class ModelPanel {
     #rootElement;
 
     /** @type {HTMLElement | undefined} */
-    #modesHostElement;
+    #sideBarHostElement;
 
     /** @type {HTMLElement | undefined} */
-    #sideBarHostElement;
+    #modelHostElement;
 
     /** @type {HTMLElement} */
     get element() {
@@ -19,24 +19,31 @@ class ModelPanel {
     constructor(rootElement) {
         if (rootElement instanceof HTMLElement) {
             this.#rootElement = rootElement;
-
-            let modesHostElement = this.#rootElement.querySelector(".modes-host");
-            if (modesHostElement instanceof HTMLElement) {
-                this.#modesHostElement = modesHostElement;
-            }
+            this.#rootElement.className = "model-panel";
+            this.#rootElement.dataset.modelPanel = "";
 
             let sideBarHostElement = this.#rootElement.querySelector(".side-bar-host");
-            if (sideBarHostElement instanceof HTMLElement) {
-                this.#sideBarHostElement = sideBarHostElement;
-            }
+            this.#sideBarHostElement =
+                sideBarHostElement instanceof HTMLElement
+                    ? sideBarHostElement
+                    : document.createElement("div");
+            this.#sideBarHostElement.className = "side-bar-host";
 
+            let modelHostElement = this.#rootElement.querySelector(".model-host");
+            this.#modelHostElement =
+                modelHostElement instanceof HTMLElement
+                    ? modelHostElement
+                    : document.createElement("div");
+            this.#modelHostElement.className = "model-host";
+
+            this.#rootElement.replaceChildren(this.#sideBarHostElement, this.#modelHostElement);
             return;
         }
 
         let builtElements = this.#createElement();
         this.#rootElement = builtElements.rootElement;
-        this.#modesHostElement = builtElements.modesHostElement;
         this.#sideBarHostElement = builtElements.sideBarHostElement;
+        this.#modelHostElement = builtElements.modelHostElement;
     }
 
     /** @returns {void} */
@@ -47,36 +54,18 @@ class ModelPanel {
      * @returns {void}
      */
     attachModelElement(modelElement) {
-        if (!this.#rootElement || !(modelElement instanceof HTMLElement)) {
+        if (!this.#modelHostElement || !(modelElement instanceof HTMLElement)) {
             return;
         }
 
-        let previousModelElement = this.#rootElement.querySelector(".model-view");
-        if (previousModelElement) {
-            if (previousModelElement === modelElement) {
-                return;
-            }
-            previousModelElement.replaceWith(modelElement);
+        if (
+            this.#modelHostElement.childElementCount === 1
+            && this.#modelHostElement.firstElementChild === modelElement
+        ) {
             return;
         }
 
-        this.#rootElement.prepend(modelElement);
-    }
-
-    /**
-     * @param {HTMLElement | undefined} modesPanelElement
-     * @returns {void}
-     */
-    attachModesPanelElement(modesPanelElement) {
-        if (!this.#modesHostElement || !(modesPanelElement instanceof HTMLElement)) {
-            return;
-        }
-
-        if (this.#modesHostElement.childElementCount === 1 && this.#modesHostElement.firstElementChild === modesPanelElement) {
-            return;
-        }
-
-        this.#modesHostElement.replaceChildren(modesPanelElement);
+        this.#modelHostElement.replaceChildren(modelElement);
     }
 
     /**
@@ -88,7 +77,10 @@ class ModelPanel {
             return;
         }
 
-        if (this.#sideBarHostElement.childElementCount === 1 && this.#sideBarHostElement.firstElementChild === sideBarElement) {
+        if (
+            this.#sideBarHostElement.childElementCount === 1
+            && this.#sideBarHostElement.firstElementChild === sideBarElement
+        ) {
             return;
         }
 
@@ -98,34 +90,27 @@ class ModelPanel {
     /**
      * @returns {{
      *     rootElement: HTMLElement,
-     *     modesHostElement: HTMLElement,
      *     sideBarHostElement: HTMLElement,
+     *     modelHostElement: HTMLElement,
      * }}
      */
     #createElement() {
         let rootElement = document.createElement("section");
         rootElement.className = "model-panel";
-
-        let hudLayerElement = document.createElement("div");
-        hudLayerElement.className = "hud-layer";
-
-        let hudTopElement = document.createElement("div");
-        hudTopElement.className = "hud-top";
-
-        let modesHostElement = document.createElement("div");
-        modesHostElement.className = "modes-host";
+        rootElement.dataset.modelPanel = "";
 
         let sideBarHostElement = document.createElement("div");
         sideBarHostElement.className = "side-bar-host";
 
-        hudTopElement.append(modesHostElement);
-        hudLayerElement.append(hudTopElement, sideBarHostElement);
-        rootElement.append(hudLayerElement);
+        let modelHostElement = document.createElement("div");
+        modelHostElement.className = "model-host";
+
+        rootElement.append(sideBarHostElement, modelHostElement);
 
         return {
             rootElement,
-            modesHostElement,
             sideBarHostElement,
+            modelHostElement,
         };
     }
 }

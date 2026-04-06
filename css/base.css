@@ -16,7 +16,7 @@ body {
     overflow: hidden;
     font-family: var(--font-family);
     color: var(--text);
-    background: var(--bg-2);
+    background: rgb(255, 255, 255);
 }
 
 body {

@@ -588,7 +588,6 @@ class CardEngine {
 
         this.#rootElement.replaceChildren(
             this.#canvasElement,
-            this.#copyElement,
             this.#statusElement
         );
 

@@ -3,6 +3,5 @@ export declare class ModelPanel {
     get element(): HTMLElement;
     initialize(): void;
     attachModelElement(modelElement: HTMLElement | undefined): void;
-    attachModesPanelElement(modesPanelElement: HTMLElement | undefined): void;
     attachSideBarElement(sideBarElement: HTMLElement | undefined): void;
 }

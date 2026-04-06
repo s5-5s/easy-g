@@ -2,10 +2,7 @@
 <html lang="ru">
     <head>
         <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=yes"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-barstyle" content="green-translucent" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -26,66 +23,31 @@
             <div class="app" data-app>
                 <main class="main" data-app-main>
                     <section class="model-panel" data-model-panel>
-                        <div class="model-view" data-model></div>
-                        <div class="hud-layer">
-                            <div class="hud-top">
-                                <div class="modes-host">
-                                    <div class="modes-panel" data-modes-panel role="group" aria-label="Режим работы">
-                                        <button class="mode-button" type="button" data-mode="fix" aria-pressed="false">
-                                            Фиксация
-                                        </button>
-                                        <button class="mode-button" type="button" data-mode="following" aria-pressed="false">
-                                            Следование
-                                        </button>
-                                        <button class="mode-button" type="button" data-mode="off" aria-pressed="false">
-                                            Выкл
-                                        </button>
-                                    </div>
+                        <div class="side-bar-host">
+                            <aside class="side-bar" data-side-bar>
+                                <div class="side-bar-head">
+                                    <h2 class="side-bar-title" data-side-bar-title>Темы</h2>
                                 </div>
-                            </div>
-                            <div class="side-bar-host">
-                                <aside class="side-bar" data-side-bar>
-                                    <div class="side-bar-head">
-                                        <button
-                                            class="mic-button"
-                                            type="button"
-                                            data-mic-toggle
-                                            aria-pressed="false"
-                                            aria-label="Включить микрофон"
-                                        >
-                                            <span class="mic-stem"></span>
+                                <div class="topic-list" data-topic-list></div>
+                                <p class="side-bar-status" data-side-bar-status hidden></p>
+                                <template data-topic-item-template>
+                                    <article class="topic-item">
+                                        <button class="topic-button" type="button" aria-expanded="false">
+                                            <span class="topic-title"></span>
+                                            <span class="topic-marker" aria-hidden="true">+</span>
                                         </button>
-                                        <div class="wave" aria-hidden="true">
-                                            <i></i>
-                                            <i></i>
-                                            <i></i>
-                                            <i></i>
-                                            <i></i>
+                                        <div class="topic-content" hidden>
+                                            <p class="topic-description"></p>
                                         </div>
-                                    </div>
-                                    <div class="commands" data-commands></div>
-                                </aside>
-                            </div>
+                                    </article>
+                                </template>
+                            </aside>
+                        </div>
+                        <div class="model-host">
+                            <div class="model-view" data-model></div>
                         </div>
                     </section>
                 </main>
-                <footer class="diag-panel" data-diag-panel>
-                    <div class="diag-empty">НЕТ СОЕДИНЕНИЯ</div>
-                    <div class="diag-items">
-                        <div class="diag-item" data-service="gu">
-                            <span class="diag-dot" aria-hidden="true"></span>
-                            <span class="diag-name">ГУ</span>
-                        </div>
-                        <div class="diag-item" data-service="radomir-service">
-                            <span class="diag-dot" aria-hidden="true"></span>
-                            <span class="diag-name">radomir-service</span>
-                        </div>
-                        <div class="diag-item" data-service="ethercat-master">
-                            <span class="diag-dot" aria-hidden="true"></span>
-                            <span class="diag-name">ethercat-master</span>
-                        </div>
-                    </div>
-                </footer>
             </div>
         </div>
     </body>

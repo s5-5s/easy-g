@@ -1,4 +1,3 @@
-import topics from "./topics.js";
 import {RadomirUi} from "./radomir-ui.js";
 
 const APP_ROOT_SELECTOR = "[data-app-root]";
@@ -6,7 +5,7 @@ const APP_ROOT_SELECTOR = "[data-app-root]";
 let appRootElement = document.querySelector(APP_ROOT_SELECTOR);
 
 if (appRootElement instanceof HTMLElement) {
-    let radomirUi = new RadomirUi(topics, appRootElement);
+    let radomirUi = new RadomirUi(appRootElement);
     if (!appRootElement.contains(radomirUi.element)) {
         appRootElement.replaceChildren(radomirUi.element);
     }
