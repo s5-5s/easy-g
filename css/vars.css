@@ -1,23 +1,24 @@
 :root {
-    --bg: #000000;
-    --text: #ffffff;
-    --accent: #ff3b30;
-    --font-ui: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-    --text-title: 1.36rem;
-    --text-main: 1rem;
-    --text-small: 0.82rem;
-}
-
-body.theme-light,
-.app.theme-light {
-    --bg: #ffffff;
-    --text: #000000;
-    --accent: #ff3b30;
-}
-
-body.theme-dark,
-.app.theme-dark {
-    --bg: #000000;
-    --text: #ffffff;
-    --accent: #ff3b30;
+    --bg-1: rgb(247, 251, 255);
+    --bg-2: rgb(241, 247, 253);
+    --bg-3: rgb(232, 241, 250);
+    --text: rgb(84, 103, 129);
+    --text-strong: rgb(58, 77, 102);
+    --muted: rgb(118, 138, 166);
+    --graphite: rgb(97, 116, 138);
+    --accent: rgb(59, 133, 194);
+    --accent-strong: rgb(52, 91, 124);
+    --accent-soft: rgba(59, 133, 194, 0.16);
+    --hud: rgba(255, 255, 255, 0.4);
+    --hud-border: rgba(127, 152, 184, 0.28);
+    --glass-strong: rgba(255, 255, 255, 0.48);
+    --glass-shadow: 0 0.42rem 1rem rgba(66, 89, 120, 0.12);
+    --active-fill: var(--accent);
+    --active-fill-reverse: var(--accent);
+    --mode-hover-fill: rgba(59, 133, 194, 0.14);
+    --ok: rgb(105, 224, 132);
+    --bad: rgb(220, 123, 119);
+    --line: rgba(122, 146, 178, 0.36);
+    --font-family: "Trebuchet MS", sans-serif;
+    --font-family-heading: "Europe Ext", "Trebuchet MS", sans-serif;
 }

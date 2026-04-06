@@ -1,0 +1,53 @@
+.modes-panel {
+    color: var(--text);
+    background: transparent;
+    backdrop-filter: blur(1.5px);
+    box-shadow: none;
+}
+
+.modes-panel::before {
+    background: var(--active-fill);
+    backdrop-filter: blur(1.5px);
+}
+
+.mode-button {
+    background: transparent;
+    color: var(--muted);
+    font-family: var(--font-family);
+    backdrop-filter: blur(1.5px);
+    box-shadow: none;
+}
+
+.mode-button:not(:first-child)::before {
+    background: rgba(106, 129, 159, 0.26);
+}
+
+.mode-button:hover {
+    color: var(--text-strong);
+}
+
+.mode-button:not(.is-active):hover {
+    background: var(--mode-hover-fill);
+}
+
+.mode-button:hover::before,
+.mode-button:hover + .mode-button::before {
+    opacity: 0;
+}
+
+.mode-button:focus,
+.mode-button:focus-visible {
+    box-shadow: none;
+}
+
+.mode-button.is-active {
+    color: rgb(255, 255, 255);
+    background: transparent;
+    backdrop-filter: blur(2px);
+    text-shadow: 0 0.03rem 0.1rem rgba(67, 83, 104, 0.28);
+}
+
+.mode-button.is-active::before,
+.mode-button.is-active + .mode-button::before {
+    opacity: 0;
+}

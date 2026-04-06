@@ -1,46 +1,42 @@
-# struct.md
+# Структура проекта
 
-## Корень проекта
-
-- `index.html` — каркас приложения и оверлей-компонентов.
-- `manifest.json` — манифест PWA.
-- `service-worker.js` — offline cache shell/ассетов.
-- `README.md` — описание проекта и запуск.
-- `rules.md` — общие правила.
-- `rules-ui.md` — правила UI-структуры.
-- `struct.md` — структура репозитория.
-- `ui-struct.md` — структура интерфейса.
-
-## Каталог `css`
-
-- `layout.css` — единая точка импорта.
-- `vars.css`, `base.css` — тема, шрифты и базовые правила.
-- `app-layout.css`, `app.css` — корневая сцена приложения.
-- `app-header-layout.css`, `app-header.css` — верхние кнопки (book/theme).
-- `topic-navigation-layout.css`, `topic-navigation.css` — единый sidebar (список тем + подробности темы).
-- `model-view-layout.css`, `model-view.css` — область рендера модели.
-- `lesson-panel-layout.css`, `lesson-panel.css` — legacy-файлы старой отдельной карточки (не подключаются в `layout.css`).
-
-## Каталог `js`
-
-- `index.js` — bootstrap и регистрация SW.
-- `easy-g-app.js` — общий state и оркестрация UI.
-- `app-header.js` — кнопки `book` и `theme`.
-- `topic-navigation.js` — sidebar: список тем и встроенная карточка темы.
-- `model-view.js` — scene/camera/controls/render.
-- `geometry-topics.js` — данные тем.
-- `geometry-model-factory.js` — фабрика 3D-моделей тем.
-- `lesson-panel.js` — legacy-класс старой отдельной карточки.
-
-## Каталог `js/vendor`
-
-- `three.module.js` — локальный three.js.
-- `OrbitControls.js` — камера/интеракции.
-
-## Каталог `fonts`
-
-- пользовательские шрифты `SF Pro Text` (опционально) и локальные fallback-файлы.
-
-## Каталог `ideas`
-
-- скетчи UX (`desktop-*`, `phone-pad-*`) и референсы Calendar (`macos-calendar-*`).
+- `index.html` - каркас страницы и подключение layout+entrypoint.
+- `manifest.json` - PWA-манифест интерфейса.
+- `readme.md` - описание проекта и правил реализации.
+- `struct.md` - описание структуры репозитория.
+- `ui-struct.md` - описание структуры UI-блоков.
+- `rules.md` - общие правила разработки.
+- `rules-ui.md` - правила реализации UI.
+- `api/` - клиент binder API (изменять нельзя).
+  - `api/remote-topic.js`
+  - `api/remote-topic.d.ts`
+- `css/` - стили интерфейса.
+  - `css/layout.css` - единая точка подключения всех стилей.
+  - `css/base.css` - базовые стили страницы.
+  - `css/vars.css` - тема и дизайн-токены.
+  - `css/app-layout.css` - раскладка основных контейнеров приложения.
+  - `css/model-layout.css` - раскладка контейнера 3D-модели.
+  - `css/model.css` - визуальные стили 3D-модели.
+  - `css/modes-panel-layout.css` - раскладка панели режимов.
+  - `css/modes-panel.css` - визуальные стили панели режимов.
+  - `css/side-bar-layout.css` - раскладка боковой панели команд.
+  - `css/side-bar.css` - визуальные стили боковой панели команд.
+  - `css/diag-panel-layout.css` - раскладка панели диагностики.
+  - `css/diag-panel.css` - визуальные стили панели диагностики.
+- `js/` - UI-логика.
+  - `js/index.js` - entrypoint приложения.
+  - `js/radomir-ui.js` - композиция UI-компонентов и связка с топиками.
+  - `js/topics.js` - инициализация и описание binder-топиков.
+  - `js/model-panel.js` - компонент макета области модели и HUD.
+  - `js/model.js` - компонент контейнера и жизненного цикла 3D-модели.
+  - `js/model-view.js` - рендерер 3D-модели (не редактировать).
+  - `js/modes-panel.js` - компонент панели выбора режима.
+  - `js/side-bar.js` - компонент микрофона и списка команд.
+  - `js/diag-panel.js` - компонент диагностики сервисов.
+  - `js/types/` - d.ts-описания UI-модулей.
+- `fonts/` - шрифты.
+- `icons/` - иконки интерфейса.
+- `img/` - изображения.
+- `img/UI.ico` - иконка интерфейса.
+- `models/` - 3D-модели (`.blend`, `.glb`).
+- `models/is.glb` - основная модель для отображения в UI.

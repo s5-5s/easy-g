@@ -1,9 +1,10 @@
 @import url("./base.css");
 @import url("./app-layout.css");
-@import url("./app.css");
-@import url("./app-header-layout.css");
-@import url("./app-header.css");
-@import url("./topic-navigation-layout.css");
-@import url("./topic-navigation.css");
-@import url("./model-view-layout.css");
-@import url("./model-view.css");
+@import url("./model-layout.css");
+@import url("./model.css");
+@import url("./modes-panel-layout.css");
+@import url("./modes-panel.css");
+@import url("./side-bar-layout.css");
+@import url("./side-bar.css");
+@import url("./diag-panel-layout.css");
+@import url("./diag-panel.css");

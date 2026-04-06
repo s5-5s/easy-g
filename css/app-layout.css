@@ -4,13 +4,128 @@
 }
 
 .app {
+    position: relative;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
     width: 100%;
     height: 100%;
+    user-select: none;
 }
 
-.model-stage {
+.main {
     position: relative;
-    width: 100%;
+    min-height: 0;
+    padding: 0;
+}
+
+.model-panel {
+    position: relative;
+    min-height: 0;
     height: 100%;
     overflow: hidden;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.hud-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(12rem, 18vw, 16rem);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: clamp(0.5rem, 1.2vw, 0.86rem);
+    padding: clamp(0.52rem, 1.4vw, 1rem);
+}
+
+.hud-top {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: center;
+    width: min(36rem, 100%);
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.modes-host {
+    width: min(36rem, 100%);
+    display: flex;
+    justify-content: center;
+    pointer-events: auto;
+}
+
+.side-bar-host {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    justify-self: end;
+    width: 100%;
+    max-height: min(56vh, calc(100% - 0.4rem));
+    pointer-events: auto;
+    animation: panel-in 280ms ease;
+}
+
+.side-bar-host > .side-bar {
+    width: 100%;
+    max-height: 100%;
+}
+
+@keyframes panel-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.55rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 760px) {
+    .main {
+        padding: 0;
+    }
+
+    .model-panel {
+        border-radius: 0;
+    }
+
+    .hud-layer {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto minmax(0, 1fr);
+        padding: 0.36rem;
+        gap: 0.44rem;
+    }
+
+    .hud-top {
+        grid-column: 1;
+        width: min(30rem, 100%);
+    }
+
+    .side-bar-host {
+        grid-column: 1;
+        grid-row: 2;
+        width: min(12.4rem, 52vw);
+        max-height: min(44vh, calc(100% - 0.4rem));
+    }
+}
+
+@media (max-height: 620px) {
+    .hud-layer {
+        padding: 0.34rem;
+    }
+
+    .side-bar-host {
+        max-height: min(46vh, calc(100% - 0.3rem));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .side-bar-host {
+        animation: none;
+    }
 }

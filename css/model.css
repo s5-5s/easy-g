@@ -1,0 +1,24 @@
+.model-view {
+    background: rgba(241, 247, 253, 0.82);
+}
+
+.model-view::before {
+    content: none;
+}
+
+.model-view::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.model-view.is-loading::after {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.model-view.is-error::after {
+    background: rgba(255, 205, 205, 0.22);
+}

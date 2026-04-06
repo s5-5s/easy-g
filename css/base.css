@@ -1,37 +1,11 @@
 @import url("./vars.css");
 
 @font-face {
-    font-family: "SF Pro Text";
-    src: local("SF Pro Text Regular"), local("SF Pro Text"),
-        url("../fonts/SFProText-Regular.woff2") format("woff2"),
-        url("../fonts/SFProText-Regular.woff") format("woff");
+    font-family: "Europe Ext";
+    src: url("../fonts/europe-ext-normal.woff") format("woff");
     font-weight: 400;
     font-style: normal;
     font-display: swap;
-}
-
-@font-face {
-    font-family: "SF Pro Text";
-    src: local("SF Pro Text Semibold"),
-        url("../fonts/SFProText-Semibold.woff2") format("woff2"),
-        url("../fonts/SFProText-Semibold.woff") format("woff");
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "SF Pro Text";
-    src: local("SF Pro Text Bold"),
-        url("../fonts/SFProText-Bold.woff2") format("woff2"),
-        url("../fonts/SFProText-Bold.woff") format("woff");
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-}
-
-* {
-    box-sizing: border-box;
 }
 
 html,
@@ -39,13 +13,46 @@ body {
     width: 100%;
     height: 100%;
     margin: 0;
+    overflow: hidden;
+    font-family: var(--font-family);
+    color: var(--text);
+    background: var(--bg-2);
 }
 
 body {
-    overflow: hidden;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-ui);
+    position: relative;
+    isolation: isolate;
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    border-radius: 999px;
+    filter: blur(0.4rem);
+    pointer-events: none;
+    z-index: -1;
+    display: none;
+}
+
+body::before {
+    width: min(62vw, 48rem);
+    height: min(62vw, 48rem);
+    top: -26vw;
+    left: -12vw;
+    background: none;
+}
+
+body::after {
+    width: min(54vw, 40rem);
+    height: min(54vw, 40rem);
+    right: -14vw;
+    bottom: -22vw;
+    background: none;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 button,

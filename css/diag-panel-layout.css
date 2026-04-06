@@ -1,0 +1,123 @@
+.diag-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 4;
+    display: grid;
+    place-items: center;
+    min-height: 1.9rem;
+    padding: 0.38rem 0.82rem 0.34rem;
+    font-size: 0.68rem;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.diag-items {
+    width: 100%;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(0.7rem, 2.3vw, 2rem);
+    overflow: auto hidden;
+    scrollbar-width: none;
+}
+
+.diag-items::-webkit-scrollbar {
+    display: none;
+}
+
+.diag-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.34rem;
+    min-width: 0;
+}
+
+.diag-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    flex: 0 0 auto;
+}
+
+.diag-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.diag-empty {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.34rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms ease;
+}
+
+.diag-empty::before {
+    content: "";
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+}
+
+.diag-panel.is-empty .diag-empty {
+    opacity: 1;
+}
+
+.diag-panel.is-empty .diag-items {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes diag-status-dot-pulse {
+    0% {
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--bad), transparent 25%);
+    }
+    70% {
+        box-shadow: 0 0 0 0.8rem transparent;
+    }
+    100% {
+        box-shadow: 0 0 0 0 transparent;
+    }
+}
+
+@keyframes diag-status-dot-unknown-pulse {
+    0% {
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--bad), transparent 20%);
+    }
+    70% {
+        box-shadow: 0 0 0 0.7rem transparent;
+    }
+    100% {
+        box-shadow: 0 0 0 0 transparent;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .diag-item.is-disconnected .diag-dot,
+    .diag-item.is-unknown .diag-dot,
+    .diag-panel.is-empty .diag-empty::before {
+        animation: none;
+    }
+}
+
+@media (max-width: 760px) {
+    .diag-panel {
+        min-height: 1.54rem;
+        font-size: 0.6rem;
+    }
+
+    .diag-items {
+        gap: 0.62rem;
+        justify-content: start;
+    }
+}

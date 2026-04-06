@@ -1,0 +1,56 @@
+.diag-panel {
+    /* border-top: 0.06rem solid var(--hud-border); */
+    color: var(--text);
+    background: transparent;
+    backdrop-filter: blur(1.5px);
+    box-shadow: none;
+    /* border: 1px solid rgba(255, 255, 255, 0.5); */
+}
+
+.diag-panel::before {
+    backdrop-filter: blur(1.5px);
+    content: none;
+}
+
+.diag-dot {
+    background: var(--bad);
+    backdrop-filter: blur(1.5px);
+}
+
+.diag-name {
+    backdrop-filter: blur(1.5px);
+    color: var(--graphite);
+    font-family: var(--font-family);
+    letter-spacing: 0.045em;
+}
+
+.diag-empty {
+    backdrop-filter: blur(1.5px);
+    color: color-mix(in srgb, var(--graphite), white 16%);
+    font-family: var(--font-family);
+    letter-spacing: 0.08em;
+}
+
+.diag-empty::before {
+    background: var(--bad);
+}
+
+.diag-panel.is-empty .diag-empty::before {
+    animation: diag-status-dot-pulse 1s ease-in-out infinite;
+}
+
+.diag-item.is-connected .diag-dot {
+    background: var(--ok);
+    animation: none;
+    box-shadow: none;
+}
+
+.diag-item.is-disconnected .diag-dot {
+    background: var(--bad);
+    animation: diag-status-dot-pulse 1s ease-in-out infinite;
+}
+
+.diag-item.is-unknown .diag-dot {
+    background: color-mix(in srgb, var(--bad), white 55%);
+    animation: diag-status-dot-unknown-pulse 1s ease-in-out infinite;
+}
