@@ -12,6 +12,7 @@
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 0.18rem 0.65rem;
+    transition: background 180ms ease, box-shadow 180ms ease;
 }
 
 .side-bar.is-collapsed {
@@ -64,7 +65,7 @@
 }
 
 .side-bar-toggle {
-    display: inline-flex;
+    display: none;
     align-items: center;
     justify-content: center;
     align-self: center;
@@ -87,6 +88,10 @@
     margin: 0;
 }
 
+.side-bar [hidden] {
+    display: none !important;
+}
+
 @media (max-width: 720px) {
     .side-bar {
         padding: 0.8rem;
@@ -105,5 +110,56 @@
     .side-bar-toggle {
         width: 1.9rem;
         min-height: 1.9rem;
+    }
+}
+
+@media (max-width: 1024px), (hover: none) and (pointer: coarse) {
+    .side-bar.is-overlay-mode {
+        width: 100%;
+        height: auto;
+        padding: 0.68rem 1rem;
+        grid-template-rows: auto;
+        gap: 0;
+    }
+
+    .side-bar.is-overlay-mode .side-bar-head {
+        min-height: 0;
+        gap: 0.24rem 0.62rem;
+        padding: 0.18rem 0.14rem;
+        border-radius: 0.8rem;
+        cursor: pointer;
+    }
+
+    .side-bar.is-overlay-mode .side-bar-title {
+        padding: 0;
+        text-align: left;
+    }
+
+    .side-bar.is-overlay-mode .side-bar-toggle {
+        display: inline-flex;
+        position: static;
+        justify-self: end;
+        width: auto;
+        min-height: 0;
+        padding: 0 0 0 0.36rem;
+        transform: none;
+    }
+
+    .side-bar.is-overlay-mode.is-collapsed .topic-list,
+    .side-bar.is-overlay-mode.is-collapsed .side-bar-status {
+        display: none !important;
+    }
+
+    .side-bar.is-overlay-mode:not(.is-collapsed) {
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        gap: 0.9rem;
+        padding:
+            0.9rem
+            0.95rem
+            calc(env(safe-area-inset-bottom) + 1rem);
+    }
+
+    .side-bar.is-overlay-mode:not(.is-collapsed) .topic-list {
+        padding-right: 0;
     }
 }

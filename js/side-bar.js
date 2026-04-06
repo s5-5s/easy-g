@@ -1,4 +1,5 @@
 const DEFAULT_CATALOG_URL = "./cards/index.json";
+const OVERLAY_LAYOUT_MEDIA_QUERY = "(max-width: 1024px), (hover: none) and (pointer: coarse)";
 
 /**
  * @typedef {{
@@ -98,11 +99,20 @@ class SideBar {
     /** @type {(event: MouseEvent) => void} */
     #clickHandlerBound;
 
+    /** @type {() => void} */
+    #viewportChangeHandlerBound;
+
+    /** @type {MediaQueryList | undefined} */
+    #overlayModeMediaQueryList;
+
     /** @type {boolean} */
     #initialized = false;
 
     /** @type {boolean} */
     #isCollapsed = false;
+
+    /** @type {boolean} */
+    #isOverlayMode = false;
 
     /** @type {HTMLElement} */
     get element() {
@@ -114,6 +124,7 @@ class SideBar {
      */
     constructor(rootElement) {
         this.#clickHandlerBound = this.#handleClick.bind(this);
+        this.#viewportChangeHandlerBound = this.#handleViewportChange.bind(this);
         this.#rootElement =
             rootElement instanceof HTMLElement
                 ? rootElement
@@ -131,6 +142,7 @@ class SideBar {
         if (!this.#initialized) {
             this.#captureElements();
             this.#rootElement.addEventListener("click", this.#clickHandlerBound);
+            this.#setupResponsiveMode();
             this.#initialized = true;
         }
 
@@ -138,7 +150,7 @@ class SideBar {
             return this.#loadingPromise;
         }
 
-        this.#setCollapsedState(false);
+        this.#setCollapsedState(this.#isOverlayMode);
         this.#rootElement.classList.remove("is-error");
         this.#setStatus("Загрузка тем...");
         this.#rootElement.classList.add("is-loading");
@@ -194,6 +206,7 @@ class SideBar {
     /** @returns {void} */
     destroy() {
         this.#rootElement?.removeEventListener("click", this.#clickHandlerBound);
+        this.#teardownResponsiveMode();
         this.#rootElement?.classList.remove("is-loading", "is-error");
         this.#loadingPromise = undefined;
         this.#catalogEntries = [];
@@ -242,6 +255,66 @@ class SideBar {
         this.#syncCollapsedState();
     }
 
+    /** @returns {void} */
+    #setupResponsiveMode() {
+        if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+            this.#applyResponsiveMode(false, true);
+            return;
+        }
+
+        if (this.#overlayModeMediaQueryList) {
+            return;
+        }
+
+        let mediaQueryList = window.matchMedia(OVERLAY_LAYOUT_MEDIA_QUERY);
+        this.#overlayModeMediaQueryList = mediaQueryList;
+
+        if (typeof mediaQueryList.addEventListener === "function") {
+            mediaQueryList.addEventListener("change", this.#viewportChangeHandlerBound);
+        } else if (typeof mediaQueryList.addListener === "function") {
+            mediaQueryList.addListener(this.#viewportChangeHandlerBound);
+        }
+
+        this.#applyResponsiveMode(mediaQueryList.matches, true);
+    }
+
+    /** @returns {void} */
+    #teardownResponsiveMode() {
+        let mediaQueryList = this.#overlayModeMediaQueryList;
+        if (mediaQueryList) {
+            if (typeof mediaQueryList.removeEventListener === "function") {
+                mediaQueryList.removeEventListener("change", this.#viewportChangeHandlerBound);
+            } else if (typeof mediaQueryList.removeListener === "function") {
+                mediaQueryList.removeListener(this.#viewportChangeHandlerBound);
+            }
+        }
+
+        this.#overlayModeMediaQueryList = undefined;
+        this.#isOverlayMode = false;
+        this.#rootElement?.classList.remove("is-overlay-mode");
+    }
+
+    /** @returns {void} */
+    #handleViewportChange() {
+        this.#applyResponsiveMode(this.#overlayModeMediaQueryList?.matches === true);
+    }
+
+    /**
+     * @param {boolean} isOverlayMode
+     * @param {boolean} forceUpdate
+     * @returns {void}
+     */
+    #applyResponsiveMode(isOverlayMode, forceUpdate = false) {
+        let nextOverlayMode = isOverlayMode === true;
+        if (!forceUpdate && this.#isOverlayMode === nextOverlayMode) {
+            return;
+        }
+
+        this.#isOverlayMode = nextOverlayMode;
+        this.#rootElement?.classList.toggle("is-overlay-mode", this.#isOverlayMode);
+        this.#setCollapsedState(this.#isOverlayMode);
+    }
+
     /**
      * @param {MouseEvent} event
      * @returns {void}
@@ -265,11 +338,24 @@ class SideBar {
             return;
         }
 
+        let sideBarHead = clickTarget.closest(".side-bar-head");
+        if (
+            this.#isOverlayMode
+            && sideBarHead instanceof HTMLElement
+            && this.#rootElement.contains(sideBarHead)
+        ) {
+            this.#setCollapsedState(!this.#isCollapsed);
+            return;
+        }
+
         let toggleButton = clickTarget.closest("[data-card-id]");
         if (
             !(toggleButton instanceof HTMLButtonElement)
             || !this.#rootElement.contains(toggleButton)
         ) {
+            if (this.#shouldCollapseFromFreeSpaceClick(clickTarget)) {
+                this.#setCollapsedState(true);
+            }
             return;
         }
 
@@ -284,6 +370,26 @@ class SideBar {
         }
 
         this.#setOpenEntry(cardId, true);
+    }
+
+    /**
+     * @param {Element} clickTarget
+     * @returns {boolean}
+     */
+    #shouldCollapseFromFreeSpaceClick(clickTarget) {
+        if (!this.#isOverlayMode || this.#isCollapsed || !this.#rootElement) {
+            return false;
+        }
+
+        if (clickTarget.closest(".side-bar-head")) {
+            return false;
+        }
+
+        if (clickTarget.closest(".topic-item")) {
+            return false;
+        }
+
+        return this.#rootElement.contains(clickTarget);
     }
 
     /**
@@ -411,6 +517,7 @@ class SideBar {
     /** @returns {void} */
     #syncCollapsedState() {
         this.#rootElement?.classList.toggle("is-collapsed", this.#isCollapsed);
+        this.#rootElement?.classList.toggle("is-overlay-mode", this.#isOverlayMode);
 
         if (this.#listElement) {
             this.#listElement.hidden =
@@ -423,14 +530,15 @@ class SideBar {
         }
 
         if (this.#toggleButtonElement) {
+            this.#toggleButtonElement.hidden = !this.#isOverlayMode;
             this.#toggleButtonElement.setAttribute(
                 "aria-expanded",
                 this.#isCollapsed ? "false" : "true"
             );
 
             let toggleLabel = this.#isCollapsed
-                ? "Развернуть список тем"
-                : "Свернуть список тем";
+                ? "Открыть темы"
+                : "Закрыть темы";
             this.#toggleButtonElement.setAttribute("aria-label", toggleLabel);
             this.#toggleButtonElement.title = toggleLabel;
         }

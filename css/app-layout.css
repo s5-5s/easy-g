@@ -53,6 +53,19 @@
     height: auto;
 }
 
+.side-bar-host > .side-bar.is-overlay-mode:not(.is-collapsed) {
+    position: fixed;
+    top: calc(env(safe-area-inset-top) + 0.5rem);
+    right: 0.5rem;
+    bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+    left: 0.5rem;
+    z-index: 12;
+    width: auto;
+    max-width: none;
+    height: auto;
+    max-height: none;
+}
+
 .model-host {
     position: absolute;
     inset: 0;
@@ -78,5 +91,22 @@
         left: 0.5rem;
         width: min(42vw, 18rem);
         min-width: 13.5rem;
+    }
+}
+
+@media (max-width: 1024px), (hover: none) and (pointer: coarse) {
+    .side-bar-host {
+        top: calc(env(safe-area-inset-top) + 0.5rem);
+        right: 0;
+        bottom: auto;
+        left: 0;
+        width: min(calc(100vw - 1rem), 15rem);
+        min-width: 0;
+        margin-inline: auto;
+    }
+
+    .side-bar-host > .side-bar {
+        height: auto;
+        max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 1rem);
     }
 }
