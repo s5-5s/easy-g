@@ -33,7 +33,7 @@
     background: rgba(255, 255, 255, 0.46);
     box-shadow:
         0 0.35rem 0.9rem rgba(17, 17, 17, 0.07),
-        inset 0 0 0 0.05rem rgba(196, 28, 28, 0.2);
+        inset 0 0 0 0.05rem rgba(17, 17, 17, 0.08);
 }
 
 .topic-button {
@@ -51,6 +51,10 @@
     font-size: 0.96rem;
     font-weight: 600;
     line-height: 1.28;
+}
+
+.topic-item.is-open .topic-title {
+    color: rgba(196, 28, 28, 0.98);
 }
 
 .topic-marker {
