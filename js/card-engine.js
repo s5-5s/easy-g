@@ -19,6 +19,9 @@ const MIN_CAMERA_PITCH = -1.22;
 const MAX_CAMERA_PITCH = 1.22;
 const MIN_SCENE_RADIUS = 1.5;
 const MIN_CAMERA_DEPTH = 0.01;
+const DESKTOP_VIEWPORT_MIN_WIDTH = 960;
+const DESKTOP_FRAME_WIDTH_RATIO = 2 / 3;
+const DESKTOP_FRAME_CENTER_X_RATIO = 2 / 3;
 
 const POINTER_ROTATION_SPEED = 0.008;
 const WHEEL_ZOOM_SPEED = 0.0012;
@@ -423,6 +426,8 @@ function computeFitDistance(sceneRadius, viewportAspect) {
  *     rightVector: Vector3,
  *     upVector: Vector3,
  *     fieldOfView: number,
+ *     frameCenterX: number,
+ *     frameCenterY: number,
  * }} cameraState
  * @param {ViewportSize} viewportSize
  * @returns {ProjectedPoint | undefined}
@@ -439,8 +444,8 @@ function projectPoint(worldPoint, cameraState, viewportSize) {
 
     let focalLength = viewportSize.height * 0.5 / Math.tan(cameraState.fieldOfView / 2);
     return {
-        screenX: viewportSize.width * 0.5 + cameraX * focalLength / cameraDepth,
-        screenY: viewportSize.height * 0.5 - cameraY * focalLength / cameraDepth,
+        screenX: cameraState.frameCenterX + cameraX * focalLength / cameraDepth,
+        screenY: cameraState.frameCenterY - cameraY * focalLength / cameraDepth,
         depth: cameraDepth,
     };
 }
@@ -938,16 +943,40 @@ class CardEngine {
 
     /**
      * @param {ViewportSize} viewportSize
+     * @returns {{frameWidth: number, frameCenterX: number, frameCenterY: number}}
+     */
+    #measureRenderFrame(viewportSize) {
+        let rootWidth = this.#rootElement.clientWidth;
+        if (rootWidth >= DESKTOP_VIEWPORT_MIN_WIDTH) {
+            return {
+                frameWidth: viewportSize.width * DESKTOP_FRAME_WIDTH_RATIO,
+                frameCenterX: viewportSize.width * DESKTOP_FRAME_CENTER_X_RATIO,
+                frameCenterY: viewportSize.height * 0.5,
+            };
+        }
+
+        return {
+            frameWidth: viewportSize.width,
+            frameCenterX: viewportSize.width * 0.5,
+            frameCenterY: viewportSize.height * 0.5,
+        };
+    }
+
+    /**
+     * @param {ViewportSize} viewportSize
      * @returns {{
      *     position: Vector3,
      *     forwardVector: Vector3,
      *     rightVector: Vector3,
      *     upVector: Vector3,
      *     fieldOfView: number,
+     *     frameCenterX: number,
+     *     frameCenterY: number,
      * }}
      */
     #buildCameraState(viewportSize) {
-        let viewportAspect = viewportSize.width / Math.max(viewportSize.height, 1);
+        let renderFrame = this.#measureRenderFrame(viewportSize);
+        let viewportAspect = renderFrame.frameWidth / Math.max(viewportSize.height, 1);
         let fitDistance = computeFitDistance(this.#sceneRadius, viewportAspect);
         let distanceValue = fitDistance * this.#distanceScale;
 
@@ -972,6 +1001,8 @@ class CardEngine {
             rightVector,
             upVector: normalizeVector(crossProduct(rightVector, forwardVector)),
             fieldOfView: DEFAULT_FIELD_OF_VIEW,
+            frameCenterX: renderFrame.frameCenterX,
+            frameCenterY: renderFrame.frameCenterY,
         };
     }
 

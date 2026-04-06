@@ -1,0 +1,65 @@
+{
+    "id": "angle-between-planes",
+    "title": "Угол между плоскостями",
+    "statement": "Две пересекающиеся плоскости называются перпендикулярными (взаимно перпендикулярными), если угол между ними равен 90°.",
+    "hint": "Перетаскивание вращает сцену. Колесо мыши и щипок меняют масштаб.",
+    "camera": {
+        "yaw": 0.86,
+        "pitch": 0.52,
+        "zoom": 1
+    },
+    "items": [
+        {
+            "type": "plane",
+            "color": "black",
+            "fillOpacity": 0.08,
+            "outlineOpacity": 0.88,
+            "outlineWidth": 2,
+            "points": [
+                [-2.1, 0, -1.7],
+                [2.1, 0, -1.7],
+                [2.1, 0, 1.7],
+                [-2.1, 0, 1.7]
+            ]
+        },
+        {
+            "type": "plane",
+            "color": "red",
+            "fillOpacity": 0.08,
+            "outlineOpacity": 0.9,
+            "outlineWidth": 2,
+            "points": [
+                [0, -0.2, -1.7],
+                [0, 2.35, -1.7],
+                [0, 2.35, 1.7],
+                [0, -0.2, 1.7]
+            ]
+        },
+        {
+            "type": "line",
+            "color": "black",
+            "opacity": 0.85,
+            "width": 4,
+            "points": [
+                [0, 0, -1.7],
+                [0, 0, 1.7]
+            ]
+        },
+        {
+            "type": "right-angle",
+            "color": "red",
+            "opacity": 1,
+            "width": 3,
+            "origin": [0, 0, 0],
+            "u": [0.34, 0, 0],
+            "v": [0, 0.34, 0]
+        },
+        {
+            "type": "label",
+            "text": "90°",
+            "color": "red",
+            "fontSize": 22,
+            "position": [0.3, 0.28, 0.12]
+        }
+    ]
+}
