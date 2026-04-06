@@ -827,7 +827,7 @@ class CardEngine {
         let deltaX = pointerX - this.#lastPointerPosition.x;
         let deltaY = pointerY - this.#lastPointerPosition.y;
 
-        this.#cameraYaw += deltaX * POINTER_ROTATION_SPEED;
+        this.#cameraYaw -= deltaX * POINTER_ROTATION_SPEED;
         this.#cameraPitch = clampNumber(
             this.#cameraPitch + deltaY * POINTER_ROTATION_SPEED,
             MIN_CAMERA_PITCH,
