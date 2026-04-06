@@ -1,5 +1,10 @@
 .model-view {
-    background: rgba(241, 247, 253, 0.82);
+    --model-ink: rgba(17, 17, 17, 0.96);
+    --model-accent: rgba(196, 28, 28, 0.98);
+    --model-surface: rgba(255, 255, 255, 0.86);
+    background:
+        radial-gradient(circle at top left, rgba(196, 28, 28, 0.08), transparent 38%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 247, 247, 0.98));
 }
 
 .model-view::before {
@@ -10,15 +15,112 @@
     content: "";
     position: absolute;
     inset: 0;
-    z-index: 3;
+    z-index: 0;
     pointer-events: none;
-    background: rgba(255, 255, 255, 0.14);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(17, 17, 17, 0.03));
 }
 
 .model-view.is-loading::after {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.46);
 }
 
 .model-view.is-error::after {
-    background: rgba(255, 205, 205, 0.22);
+    background: rgba(196, 28, 28, 0.08);
+}
+
+.card-copy,
+.model-status {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.card-copy[hidden],
+.model-status[hidden] {
+    display: none;
+}
+
+.card-copy {
+    left: clamp(0.8rem, 2vw, 1.25rem);
+    bottom: clamp(0.8rem, 2vw, 1.25rem);
+    width: min(32rem, calc(100% - 1.6rem));
+    padding: clamp(0.85rem, 2vw, 1.15rem);
+    border: 1px solid rgba(17, 17, 17, 0.12);
+    border-left: 0.28rem solid var(--model-accent);
+    border-radius: 0.95rem;
+    background: var(--model-surface);
+    backdrop-filter: blur(0.45rem);
+    box-shadow: 0 0.7rem 2rem rgba(17, 17, 17, 0.08);
+}
+
+.card-copy-subtitle,
+.card-copy-title,
+.card-copy-statement,
+.card-copy-hint {
+    margin: 0;
+}
+
+.card-copy-subtitle {
+    color: var(--model-accent);
+    font-family: var(--font-family-heading);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.card-copy-title {
+    margin-top: 0.24rem;
+    color: var(--model-ink);
+    font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+    line-height: 1.15;
+}
+
+.card-copy-statement {
+    margin-top: 0.42rem;
+    color: var(--model-ink);
+    font-size: clamp(0.92rem, 1.7vw, 1rem);
+    line-height: 1.42;
+}
+
+.card-copy-hint {
+    margin-top: 0.62rem;
+    padding-top: 0.52rem;
+    border-top: 1px solid rgba(17, 17, 17, 0.1);
+    color: rgba(17, 17, 17, 0.72);
+    font-size: 0.82rem;
+    line-height: 1.32;
+}
+
+.model-status {
+    left: 50%;
+    top: 50%;
+    min-width: 14rem;
+    max-width: min(24rem, calc(100% - 2rem));
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(17, 17, 17, 0.12);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--model-ink);
+    text-align: center;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0.5rem 1.6rem rgba(17, 17, 17, 0.08);
+}
+
+.model-view.is-error .model-status {
+    border-color: rgba(196, 28, 28, 0.18);
+    color: var(--model-accent);
+}
+
+@media (max-width: 760px) {
+    .card-copy {
+        left: 0.52rem;
+        right: 0.52rem;
+        bottom: 0.52rem;
+        width: auto;
+        padding: 0.78rem 0.82rem;
+    }
+
+    .card-copy-hint {
+        font-size: 0.78rem;
+    }
 }

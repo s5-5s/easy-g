@@ -1,11 +1,13 @@
-import ModelView from "./model-view.js";
+import {CardEngine} from "./card-engine.js";
+
+const DEFAULT_CARD_URL = "./cards/perpendicular-planes.json";
 
 class Model {
     /** @type {HTMLElement | undefined} */
     #rootElement;
 
-    /** @type {ModelView | undefined} */
-    #modelView;
+    /** @type {CardEngine | undefined} */
+    #cardEngine;
 
     /** @type {Promise<void> | undefined} */
     #loadingPromise;
@@ -19,27 +21,36 @@ class Model {
      * @param {HTMLElement | undefined} rootElement
      */
     constructor(rootElement) {
-        this.#rootElement = rootElement instanceof HTMLElement ? rootElement : document.createElement("div");
+        this.#rootElement =
+            rootElement instanceof HTMLElement
+                ? rootElement
+                : document.createElement("div");
         this.#rootElement.classList.add("model-view");
         this.#rootElement.dataset.model = "";
     }
 
     /** @returns {Promise<void> | undefined} */
     initialize() {
-        if (!this.#rootElement || this.#loadingPromise || this.#modelView) {
+        if (!this.#rootElement || this.#loadingPromise || this.#cardEngine) {
             return this.#loadingPromise;
         }
 
         this.#rootElement.classList.remove("is-error");
         this.#rootElement.classList.add("is-loading");
 
-        this.#modelView = new ModelView(this.#rootElement);
-        this.#loadingPromise = this.#modelView
-            .loadGlb("./models/is.glb")
+        this.#cardEngine = new CardEngine(this.#rootElement);
+        this.#cardEngine.setStatus("Загрузка карточки...");
+
+        this.#loadingPromise = this.#cardEngine
+            .loadCard(DEFAULT_CARD_URL)
             .catch(() => {
                 this.#rootElement?.classList.add("is-error");
+                this.#cardEngine?.setStatus("Не удалось загрузить карточку.");
             })
             .finally(() => {
+                if (!this.#rootElement?.classList.contains("is-error")) {
+                    this.#cardEngine?.setStatus("");
+                }
                 this.#rootElement?.classList.remove("is-loading");
                 this.#loadingPromise = undefined;
             });
@@ -49,8 +60,8 @@ class Model {
 
     /** @returns {void} */
     destroy() {
-        this.#modelView?.destroy?.();
-        this.#modelView = undefined;
+        this.#cardEngine?.destroy();
+        this.#cardEngine = undefined;
         this.#loadingPromise = undefined;
 
         if (!this.#rootElement) {
