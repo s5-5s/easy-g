@@ -77,6 +77,12 @@ class SideBar {
     /** @type {HTMLTemplateElement | undefined} */
     #itemTemplateElement;
 
+    /** @type {HTMLButtonElement | undefined} */
+    #toggleButtonElement;
+
+    /** @type {HTMLElement | undefined} */
+    #toggleMarkerElement;
+
     /** @type {Promise<void> | undefined} */
     #loadingPromise;
 
@@ -94,6 +100,9 @@ class SideBar {
 
     /** @type {boolean} */
     #initialized = false;
+
+    /** @type {boolean} */
+    #isCollapsed = false;
 
     /** @type {HTMLElement} */
     get element() {
@@ -129,6 +138,7 @@ class SideBar {
             return this.#loadingPromise;
         }
 
+        this.#setCollapsedState(false);
         this.#rootElement.classList.remove("is-error");
         this.#setStatus("Загрузка тем...");
         this.#rootElement.classList.add("is-loading");
@@ -189,6 +199,7 @@ class SideBar {
         this.#catalogEntries = [];
         this.#openEntryId = undefined;
         this.#cardToggleHandler = undefined;
+        this.#setCollapsedState(false);
         this.#initialized = false;
     }
 
@@ -217,6 +228,18 @@ class SideBar {
         if (itemTemplateElement instanceof HTMLTemplateElement) {
             this.#itemTemplateElement = itemTemplateElement;
         }
+
+        let toggleButtonElement = this.#rootElement.querySelector("[data-side-bar-toggle]");
+        if (toggleButtonElement instanceof HTMLButtonElement) {
+            this.#toggleButtonElement = toggleButtonElement;
+        }
+
+        let toggleMarkerElement = this.#rootElement.querySelector("[data-side-bar-toggle-marker]");
+        if (toggleMarkerElement instanceof HTMLElement) {
+            this.#toggleMarkerElement = toggleMarkerElement;
+        }
+
+        this.#syncCollapsedState();
     }
 
     /**
@@ -230,6 +253,15 @@ class SideBar {
 
         let clickTarget = event.target;
         if (!(clickTarget instanceof Element)) {
+            return;
+        }
+
+        let sideBarToggleButton = clickTarget.closest("[data-side-bar-toggle]");
+        if (
+            sideBarToggleButton instanceof HTMLButtonElement
+            && this.#rootElement.contains(sideBarToggleButton)
+        ) {
+            this.#setCollapsedState(!this.#isCollapsed);
             return;
         }
 
@@ -292,6 +324,7 @@ class SideBar {
 
         if (this.#catalogEntries.length === 0) {
             this.#listElement.replaceChildren();
+            this.#syncCollapsedState();
             return;
         }
 
@@ -301,6 +334,7 @@ class SideBar {
         }
 
         this.#listElement.replaceChildren(...topicElements);
+        this.#syncCollapsedState();
     }
 
     /**
@@ -361,7 +395,49 @@ class SideBar {
         }
 
         this.#statusElement.textContent = normalizeText(statusText);
-        this.#statusElement.hidden = this.#statusElement.textContent.length === 0;
+        this.#statusElement.hidden =
+            this.#isCollapsed || this.#statusElement.textContent.length === 0;
+    }
+
+    /**
+     * @param {boolean} isCollapsed
+     * @returns {void}
+     */
+    #setCollapsedState(isCollapsed) {
+        this.#isCollapsed = isCollapsed === true;
+        this.#syncCollapsedState();
+    }
+
+    /** @returns {void} */
+    #syncCollapsedState() {
+        this.#rootElement?.classList.toggle("is-collapsed", this.#isCollapsed);
+
+        if (this.#listElement) {
+            this.#listElement.hidden =
+                this.#isCollapsed || this.#catalogEntries.length === 0;
+        }
+
+        if (this.#statusElement) {
+            this.#statusElement.hidden =
+                this.#isCollapsed || this.#statusElement.textContent.length === 0;
+        }
+
+        if (this.#toggleButtonElement) {
+            this.#toggleButtonElement.setAttribute(
+                "aria-expanded",
+                this.#isCollapsed ? "false" : "true"
+            );
+
+            let toggleLabel = this.#isCollapsed
+                ? "Развернуть список тем"
+                : "Свернуть список тем";
+            this.#toggleButtonElement.setAttribute("aria-label", toggleLabel);
+            this.#toggleButtonElement.title = toggleLabel;
+        }
+
+        if (this.#toggleMarkerElement) {
+            this.#toggleMarkerElement.textContent = this.#isCollapsed ? "+" : "−";
+        }
     }
 }
 

@@ -18,6 +18,22 @@
     line-height: 1.1;
 }
 
+.side-bar-toggle {
+    background: transparent;
+    color: rgba(17, 17, 17, 0.88);
+    cursor: pointer;
+    transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.side-bar-toggle:hover {
+    background: rgba(255, 255, 255, 0.34);
+}
+
+.side-bar-toggle-marker {
+    font-size: clamp(1.9rem, 4vw, 2.45rem);
+    font-weight: 500;
+}
+
 .topic-item {
     border-radius: 1.05rem;
     background: rgba(255, 255, 255, 0.36);
@@ -76,12 +92,16 @@
     line-height: 1.35;
 }
 
-.side-bar.is-loading .side-bar-status,
-.side-bar.is-error .side-bar-status {
+.side-bar.is-loading .side-bar-status:not([hidden]),
+.side-bar.is-error .side-bar-status:not([hidden]) {
     display: block;
 }
 
 @media (hover: hover) and (pointer: fine) {
+    .side-bar-toggle:hover {
+        transform: translateY(-0.03rem);
+    }
+
     .topic-item:hover {
         transform: translateY(-0.08rem);
         background: rgba(255, 255, 255, 0.42);

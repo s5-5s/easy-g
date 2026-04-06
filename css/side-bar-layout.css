@@ -9,7 +9,14 @@
 
 .side-bar-head {
     display: grid;
-    gap: 0.18rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.18rem 0.65rem;
+}
+
+.side-bar.is-collapsed {
+    grid-template-rows: auto;
+    gap: 0;
 }
 
 .topic-list {
@@ -56,6 +63,24 @@
     padding: 0 0.9rem 0.9rem;
 }
 
+.side-bar-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    justify-self: end;
+    width: clamp(2rem, 4vw, 2.5rem);
+    min-height: clamp(2rem, 4vw, 2.5rem);
+    padding: 0;
+    border: none;
+    border-radius: 0.8rem;
+}
+
+.side-bar-toggle-marker {
+    display: block;
+    line-height: 1;
+}
+
 .topic-description,
 .side-bar-title,
 .side-bar-status {
@@ -75,5 +100,10 @@
 
     .topic-content {
         padding: 0 0.78rem 0.78rem;
+    }
+
+    .side-bar-toggle {
+        width: 1.9rem;
+        min-height: 1.9rem;
     }
 }

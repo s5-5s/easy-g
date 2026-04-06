@@ -40,12 +40,17 @@
     z-index: 3;
     width: min(33.333vw, 25rem);
     min-width: 18rem;
-    pointer-events: auto;
+    pointer-events: none;
 }
 
 .side-bar-host > .side-bar {
     width: 100%;
     height: 100%;
+    pointer-events: auto;
+}
+
+.side-bar-host > .side-bar.is-collapsed {
+    height: auto;
 }
 
 .model-host {
