@@ -9,7 +9,7 @@
 - `rules-ui.md` - правила реализации UI.
 - `cards/` - JSON-карточки тем easy-g.
 - `cards/index.json` - каталог тем для левого сайдбара.
-- `cards/perpendicular-planes.json` - первая карточка с теоремой о перпендикулярных плоскостях.
+- `cards/rule-001.json` - пример карточки правила из каталога.
 - `api/` - клиент binder API (изменять нельзя).
   - `api/remote-topic.js`
   - `api/remote-topic.d.ts`

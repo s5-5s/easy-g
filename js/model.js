@@ -1,6 +1,20 @@
 import {CardEngine} from "./card-engine.js";
 
-const DEFAULT_CARD_URL = "./cards/perpendicular-planes.json";
+const DEFAULT_CARD_URL = "./cards/rule-001.json";
+const CARD_DATA_VERSION = "20260419d";
+
+/**
+ * @param {string} cardUrl
+ * @returns {string}
+ */
+function buildVersionedCardUrl(cardUrl) {
+    let normalizedCardUrl = typeof cardUrl === "string" ? cardUrl.trim() : "";
+    if (!normalizedCardUrl) {
+        return normalizedCardUrl;
+    }
+
+    return `${normalizedCardUrl}${normalizedCardUrl.includes("?") ? "&" : "?"}v=${CARD_DATA_VERSION}`;
+}
 
 class Model {
     /** @type {HTMLElement | undefined} */
@@ -63,7 +77,7 @@ class Model {
             this.#cardEngine = new CardEngine(this.#rootElement);
         }
 
-        let normalizedCardUrl = cardUrl.trim();
+        let normalizedCardUrl = buildVersionedCardUrl(cardUrl);
         if (this.#loadingPromise && this.#currentCardUrl === normalizedCardUrl) {
             return this.#loadingPromise;
         }
@@ -71,7 +85,6 @@ class Model {
         this.#currentCardUrl = normalizedCardUrl;
         this.#rootElement.classList.remove("is-error");
         this.#rootElement.classList.add("is-loading");
-        this.#cardEngine.setStatus("Загрузка карточки...");
 
         this.#loadingPromise = this.#cardEngine
             .loadCard(normalizedCardUrl)

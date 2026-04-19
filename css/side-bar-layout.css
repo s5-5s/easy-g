@@ -61,7 +61,46 @@
 }
 
 .topic-content {
+    display: grid;
+    gap: 0.52rem;
     padding: 0 0.9rem 0.9rem;
+}
+
+.topic-card-list {
+    display: grid;
+    gap: 0.42rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.topic-card-item {
+    min-width: 0;
+}
+
+.topic-card-button {
+    display: grid;
+    gap: 0.12rem;
+    width: 100%;
+    padding: 0.54rem 0.62rem;
+    border: none;
+    border-radius: 0.72rem;
+    text-align: left;
+}
+
+.topic-card-subtitle {
+    display: block;
+    min-width: 0;
+}
+
+.topic-card-title {
+    display: block;
+    min-width: 0;
+}
+
+.topic-card-description {
+    display: block;
+    min-width: 0;
 }
 
 .side-bar-toggle {
@@ -105,6 +144,10 @@
 
     .topic-content {
         padding: 0 0.78rem 0.78rem;
+    }
+
+    .topic-card-button {
+        padding: 0.48rem 0.56rem;
     }
 
     .side-bar-toggle {

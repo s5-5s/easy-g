@@ -606,7 +606,7 @@ class CardEngine {
      * @returns {Promise<void>}
      */
     async loadCard(cardUrl) {
-        let response = await fetch(cardUrl);
+        let response = await fetch(cardUrl, {cache: "no-store"});
         if (!response.ok) {
             throw new Error(`Card request failed: ${response.status}`);
         }
