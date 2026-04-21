@@ -73,6 +73,9 @@ class SideBar {
     #statusElement;
 
     /** @type {HTMLElement | undefined} */
+    #panelElement;
+
+    /** @type {HTMLElement | undefined} */
     #titleElement;
 
     /** @type {HTMLTemplateElement | undefined} */
@@ -237,6 +240,11 @@ class SideBar {
             this.#statusElement = statusElement;
         }
 
+        let panelElement = this.#rootElement.querySelector("[data-side-bar-panel]");
+        if (panelElement instanceof HTMLElement) {
+            this.#panelElement = panelElement;
+        }
+
         let itemTemplateElement = this.#rootElement.querySelector("[data-topic-item-template]");
         if (itemTemplateElement instanceof HTMLTemplateElement) {
             this.#itemTemplateElement = itemTemplateElement;
@@ -335,6 +343,15 @@ class SideBar {
             && this.#rootElement.contains(sideBarToggleButton)
         ) {
             this.#setCollapsedState(!this.#isCollapsed);
+            return;
+        }
+
+        if (
+            this.#isOverlayMode
+            && this.#isCollapsed
+            && this.#rootElement.contains(clickTarget)
+        ) {
+            this.#setCollapsedState(false);
             return;
         }
 
@@ -501,8 +518,7 @@ class SideBar {
         }
 
         this.#statusElement.textContent = normalizeText(statusText);
-        this.#statusElement.hidden =
-            this.#isCollapsed || this.#statusElement.textContent.length === 0;
+        this.#statusElement.hidden = this.#statusElement.textContent.length === 0;
     }
 
     /**
@@ -520,13 +536,22 @@ class SideBar {
         this.#rootElement?.classList.toggle("is-overlay-mode", this.#isOverlayMode);
 
         if (this.#listElement) {
-            this.#listElement.hidden =
-                this.#isCollapsed || this.#catalogEntries.length === 0;
+            this.#listElement.hidden = this.#catalogEntries.length === 0;
         }
 
         if (this.#statusElement) {
-            this.#statusElement.hidden =
-                this.#isCollapsed || this.#statusElement.textContent.length === 0;
+            this.#statusElement.hidden = this.#statusElement.textContent.length === 0;
+        }
+
+        if (this.#panelElement) {
+            this.#panelElement.setAttribute(
+                "aria-hidden",
+                this.#isCollapsed ? "true" : "false"
+            );
+
+            if ("inert" in this.#panelElement) {
+                this.#panelElement.inert = this.#isCollapsed;
+            }
         }
 
         if (this.#toggleButtonElement) {
