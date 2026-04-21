@@ -105,51 +105,6 @@
     white-space: pre-line;
 }
 
-.topic-card-button {
-    background: rgba(255, 255, 255, 0.52);
-    color: rgba(17, 17, 17, 0.88);
-    cursor: pointer;
-    box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.08);
-    transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
-}
-
-.topic-card-button.is-selected {
-    background: rgba(255, 255, 255, 0.52);
-    box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.08);
-}
-
-.topic-card-subtitle {
-    color: rgba(17, 17, 17, 0.62);
-    font-size: 0.74rem;
-    font-weight: 600;
-    line-height: 1.25;
-    letter-spacing: 0.01em;
-}
-
-.topic-card-title {
-    color: rgba(17, 17, 17, 0.92);
-    font-size: 0.84rem;
-    line-height: 1.35;
-}
-
-.topic-card-description {
-    color: rgba(17, 17, 17, 0.74);
-    font-size: 0.79rem;
-    line-height: 1.38;
-}
-
-.topic-card-button.is-selected .topic-card-title {
-    color: rgba(196, 28, 28, 0.98);
-}
-
-.topic-card-button.is-selected .topic-card-subtitle {
-    color: rgba(196, 28, 28, 0.78);
-}
-
-.topic-card-button.is-selected .topic-card-description {
-    color: rgba(196, 28, 28, 0.9);
-}
-
 .side-bar-status {
     color: rgba(17, 17, 17, 0.72);
     font-size: 0.86rem;
@@ -177,12 +132,6 @@
         box-shadow:
             0 0.42rem 0.95rem rgba(17, 17, 17, 0.08),
             inset 0 0 0 0.05rem rgba(17, 17, 17, 0.08);
-    }
-
-    .topic-card-button:hover {
-        transform: translateY(-0.03rem);
-        background: rgba(255, 255, 255, 0.66);
-        box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.1);
     }
 }
 

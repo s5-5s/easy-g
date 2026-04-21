@@ -1,0 +1,90 @@
+{
+    "id": "perpendicular-planes",
+    "subtitle": "Теорема",
+    "title": "Перпендикулярные плоскости",
+    "statement": "Если одна из двух плоскостей проходит через прямую, перпендикулярную к другой плоскости, то такие плоскости перпендикулярны.",
+    "hint": "Перетаскивание вращает сцену. Колесо мыши и щипок меняют масштаб.",
+    "camera": {
+        "yaw": 0.92,
+        "pitch": 0.56,
+        "zoom": 1
+    },
+    "items": [
+        {
+            "type": "plane",
+            "color": "black",
+            "fillOpacity": 0.08,
+            "outlineOpacity": 0.88,
+            "outlineWidth": 2,
+            "points": [
+                [-2.2, 0, -1.8],
+                [2.2, 0, -1.8],
+                [2.2, 0, 1.8],
+                [-2.2, 0, 1.8]
+            ]
+        },
+        {
+            "type": "plane",
+            "color": "red",
+            "fillOpacity": 0.08,
+            "outlineOpacity": 0.92,
+            "outlineWidth": 2,
+            "points": [
+                [0, -0.25, -1.75],
+                [0, 2.4, -1.75],
+                [0, 2.4, 1.75],
+                [0, -0.25, 1.75]
+            ]
+        },
+        {
+            "type": "line",
+            "color": "black",
+            "opacity": 0.82,
+            "width": 3,
+            "points": [
+                [0, 0, -1.75],
+                [0, 0, 1.75]
+            ]
+        },
+        {
+            "type": "line",
+            "color": "red",
+            "opacity": 1,
+            "width": 5,
+            "points": [
+                [0, 0, 0],
+                [0, 2.05, 0]
+            ]
+        },
+        {
+            "type": "right-angle",
+            "color": "red",
+            "opacity": 1,
+            "width": 3,
+            "origin": [0, 0, 0],
+            "u": [0.34, 0, 0],
+            "v": [0, 0.34, 0]
+        },
+        {
+            "type": "label",
+            "text": "α",
+            "color": "black",
+            "fontSize": 24,
+            "position": [1.5, 0.03, 1.12]
+        },
+        {
+            "type": "label",
+            "text": "β",
+            "color": "red",
+            "fontSize": 24,
+            "position": [0.12, 1.58, 1.2]
+        },
+        {
+            "type": "label",
+            "text": "a",
+            "color": "red",
+            "fontSize": 24,
+            "position": [0.14, 1.28, 0.18]
+        }
+    ]
+}

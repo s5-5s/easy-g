@@ -1,0 +1,78 @@
+{
+    "id": "plane-perpendicular-to-intersection-line",
+    "title": "Плоскость и линия пересечения",
+    "statement": "Плоскость, перпендикулярная к прямой, по которой пересекаются две данные плоскости, перпендикулярна к каждой из этих плоскостей.",
+    "hint": "Перетаскивание вращает сцену. Колесо мыши и щипок меняют масштаб.",
+    "camera": {
+        "yaw": 0.9,
+        "pitch": 0.5,
+        "zoom": 1
+    },
+    "items": [
+        {
+            "type": "plane",
+            "color": "black",
+            "fillOpacity": 0.05,
+            "outlineOpacity": 0.78,
+            "outlineWidth": 2,
+            "points": [
+                [0, -0.2, -1.85],
+                [0, 2.3, -1.85],
+                [0, 2.3, 1.85],
+                [0, -0.2, 1.85]
+            ]
+        },
+        {
+            "type": "plane",
+            "color": "black",
+            "fillOpacity": 0.05,
+            "outlineOpacity": 0.68,
+            "outlineWidth": 2,
+            "points": [
+                [0, -0.2, 0],
+                [0, 2.3, 0],
+                [1.7, 2.3, 1.08],
+                [1.7, -0.2, 1.08]
+            ]
+        },
+        {
+            "type": "plane",
+            "color": "red",
+            "fillOpacity": 0.08,
+            "outlineOpacity": 0.9,
+            "outlineWidth": 2,
+            "points": [
+                [-1.95, 0, -1.65],
+                [1.95, 0, -1.65],
+                [1.95, 0, 1.65],
+                [-1.95, 0, 1.65]
+            ]
+        },
+        {
+            "type": "line",
+            "color": "black",
+            "opacity": 1,
+            "width": 5,
+            "points": [
+                [0, -0.2, 0],
+                [0, 2.3, 0]
+            ]
+        },
+        {
+            "type": "right-angle",
+            "color": "red",
+            "opacity": 1,
+            "width": 3,
+            "origin": [0, 0, 0],
+            "u": [0.34, 0, 0],
+            "v": [0, 0.34, 0]
+        },
+        {
+            "type": "label",
+            "text": "a",
+            "color": "black",
+            "fontSize": 24,
+            "position": [0.1, 1.32, 0.12]
+        }
+    ]
+}
