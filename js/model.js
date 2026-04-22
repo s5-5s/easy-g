@@ -71,7 +71,7 @@ class Model {
         this.#currentCardUrl = normalizedCardUrl;
         this.#rootElement.classList.remove("is-error");
         this.#rootElement.classList.add("is-loading");
-        this.#cardEngine.setStatus("Загрузка карточки...");
+        this.#cardEngine.setStatus("");
 
         this.#loadingPromise = this.#cardEngine
             .loadCard(normalizedCardUrl)
