@@ -1,4 +1,4 @@
-const CACHE_VERSION = "easy-g-v20260422-1";
+const CACHE_VERSION = "easy-g-v20260422-2";
 const STATIC_CACHE_NAME = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE_NAME = `${CACHE_VERSION}-runtime`;
 const OFFLINE_PAGE_URL = "./index.html";
@@ -7,11 +7,7 @@ const CORE_ASSET_URLS = [
     "./",
     "./index.html",
     "./manifest.json",
-    "./favicon.ico",
-    "./img/UI.ico",
-    "./img/apple-touch-icon.png",
-    "./img/icon-192.png",
-    "./img/icon-512.png",
+    "./img/app-icon.png",
     "./fonts/europe-ext-normal.woff",
     "./css/layout.css",
     "./css/base.css",
