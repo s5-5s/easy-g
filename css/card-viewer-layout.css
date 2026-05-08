@@ -1,4 +1,4 @@
-.model-view {
+.card-viewer {
     position: relative;
     display: block;
     width: 100%;
@@ -7,7 +7,7 @@
     overflow: hidden;
 }
 
-.model-view canvas {
+.card-viewer canvas {
     display: block;
     position: absolute;
     inset: 0;
@@ -19,6 +19,6 @@
     cursor: grab;
 }
 
-.model-view.is-dragging canvas {
+.card-viewer.is-dragging canvas {
     cursor: grabbing;
 }

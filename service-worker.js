@@ -1,7 +1,8 @@
-const CACHE_VERSION = "easy-g-v20260422-2";
+const CACHE_VERSION = "easy-g-v20260508-1";
 const STATIC_CACHE_NAME = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE_NAME = `${CACHE_VERSION}-runtime`;
 const OFFLINE_PAGE_URL = "./index.html";
+const CARD_CATALOG_URL = "./cards/index.json";
 
 const CORE_ASSET_URLS = [
     "./",
@@ -13,32 +14,30 @@ const CORE_ASSET_URLS = [
     "./css/base.css",
     "./css/vars.css",
     "./css/app-layout.css",
-    "./css/model-layout.css",
-    "./css/model.css",
+    "./css/card-viewer-layout.css",
+    "./css/card-viewer.css",
     "./css/side-bar-layout.css",
     "./css/side-bar.css",
     "./js/index.js",
-    "./js/radomir-ui.js",
-    "./js/model-panel.js",
-    "./js/model.js",
-    "./js/card-engine.js",
-    "./js/side-bar.js",
-    "./cards/index.json",
-    "./cards/perpendicular-planes.json",
-    "./cards/angle-between-planes.json",
-    "./cards/angle-between-line-and-plane.json",
-    "./cards/dihedral-angle.json",
-    "./cards/plane-perpendicular-to-intersection-line.json",
+    "./js/app/easy-g-app.js",
+    "./js/components/card-viewer-component.js",
+    "./js/components/side-bar-component.js",
+    "./js/card-engine/camera.js",
+    "./js/card-engine/card-engine.js",
+    "./js/card-engine/pointer-controls.js",
+    "./js/card-engine/renderer.js",
+    "./js/card-engine/scene-compiler.js",
+    "./js/card-engine/scene-schema.js",
+    "./js/card-engine/styles.js",
+    "./js/card-engine/vector.js",
+    "./js/shared/dom.js",
+    "./js/shared/normalize.js",
+    CARD_CATALOG_URL,
 ];
 
 self.addEventListener("install", (event) => {
     event.waitUntil(
-        caches
-            .open(STATIC_CACHE_NAME)
-            .then((cache) => {
-                let requests = CORE_ASSET_URLS.map((assetUrl) => new Request(assetUrl, {cache: "reload"}));
-                return cache.addAll(requests);
-            })
+        cacheStaticAssets()
             .then(() => self.skipWaiting())
     );
 });
@@ -104,4 +103,37 @@ async function handleRequest(request) {
 
         throw error;
     }
+}
+
+async function cacheStaticAssets() {
+    let cache = await caches.open(STATIC_CACHE_NAME);
+    let assetUrls = await buildStaticAssetUrls();
+    let requests = assetUrls.map((assetUrl) => new Request(assetUrl, {cache: "reload"}));
+    await cache.addAll(requests);
+}
+
+async function buildStaticAssetUrls() {
+    let cardUrls = await loadCatalogCardUrls();
+    return [...new Set([...CORE_ASSET_URLS, ...cardUrls])];
+}
+
+async function loadCatalogCardUrls() {
+    try {
+        let response = await fetch(new Request(CARD_CATALOG_URL, {cache: "reload"}));
+        if (!response.ok) {
+            return [];
+        }
+
+        let catalogDefinition = await response.json();
+        return normalizeCatalogCardUrls(catalogDefinition);
+    } catch {
+        return [];
+    }
+}
+
+function normalizeCatalogCardUrls(catalogDefinition) {
+    let catalogItems = Array.isArray(catalogDefinition?.items) ? catalogDefinition.items : [];
+    return catalogItems
+        .map((catalogItem) => typeof catalogItem?.url === "string" ? catalogItem.url.trim() : "")
+        .filter(Boolean);
 }

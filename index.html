@@ -20,7 +20,7 @@
         <div class="app-root" data-app-root>
             <div class="app" data-app>
                 <main class="main" data-app-main>
-                    <section class="model-panel" data-model-panel>
+                    <section class="workspace" data-easy-g-workspace>
                         <div class="side-bar-host">
                             <aside class="side-bar" data-side-bar>
                                 <div class="side-bar-head">
@@ -38,24 +38,24 @@
                                     </button>
                                 </div>
                                 <div class="side-bar-panel" data-side-bar-panel>
-                                    <div class="topic-list" data-topic-list></div>
+                                    <div class="card-list" data-card-list></div>
                                     <p class="side-bar-status" data-side-bar-status hidden></p>
                                 </div>
-                                <template data-topic-item-template>
-                                    <article class="topic-item">
-                                        <button class="topic-button" type="button" aria-expanded="false">
-                                            <span class="topic-title"></span>
-                                            <span class="topic-marker" aria-hidden="true">+</span>
+                                <template data-card-item-template>
+                                    <article class="card-item">
+                                        <button class="card-button" type="button" aria-expanded="false">
+                                            <span class="card-title"></span>
+                                            <span class="card-marker" aria-hidden="true">+</span>
                                         </button>
-                                        <div class="topic-content" hidden>
-                                            <p class="topic-description"></p>
+                                        <div class="card-content" hidden>
+                                            <p class="card-description"></p>
                                         </div>
                                     </article>
                                 </template>
                             </aside>
                         </div>
-                        <div class="model-host">
-                            <div class="model-view" data-model></div>
+                        <div class="card-viewer-host">
+                            <div class="card-viewer" data-card-viewer></div>
                         </div>
                     </section>
                 </main>

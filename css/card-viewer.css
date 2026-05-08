@@ -1,17 +1,17 @@
-.model-view {
-    --model-ink: rgba(17, 17, 17, 0.96);
-    --model-accent: rgba(196, 28, 28, 0.98);
+.card-viewer {
+    --card-viewer-ink: rgba(17, 17, 17, 0.96);
+    --card-viewer-accent: rgba(196, 28, 28, 0.98);
     border: none;
     border-radius: 0;
     background: rgb(255, 255, 255);
     box-shadow: none;
 }
 
-.model-view::before {
+.card-viewer::before {
     content: none;
 }
 
-.model-view::after {
+.card-viewer::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -20,25 +20,18 @@
     background: none;
 }
 
-.model-view.is-loading::after {
+.card-viewer.is-loading::after {
     background: rgba(255, 255, 255, 0.46);
 }
 
-.model-view.is-error::after {
+.card-viewer.is-error::after {
     background: rgba(196, 28, 28, 0.08);
 }
 
-.model-status {
+.card-viewer-status {
     position: absolute;
     z-index: 2;
     pointer-events: none;
-}
-
-.model-status[hidden] {
-    display: none;
-}
-
-.model-status {
     left: 50%;
     top: 50%;
     min-width: 14rem;
@@ -47,13 +40,17 @@
     border: 1px solid rgba(17, 17, 17, 0.12);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.92);
-    color: var(--model-ink);
+    color: var(--card-viewer-ink);
     text-align: center;
     transform: translate(-50%, -50%);
     box-shadow: 0 0.5rem 1.6rem rgba(17, 17, 17, 0.08);
 }
 
-.model-view.is-error .model-status {
+.card-viewer-status[hidden] {
+    display: none;
+}
+
+.card-viewer.is-error .card-viewer-status {
     border-color: rgba(196, 28, 28, 0.18);
-    color: var(--model-accent);
+    color: var(--card-viewer-accent);
 }

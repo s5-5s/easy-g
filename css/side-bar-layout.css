@@ -38,7 +38,7 @@
         visibility 0s linear 0s;
 }
 
-.topic-list {
+.card-list {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
@@ -49,16 +49,16 @@
     scrollbar-width: none;
 }
 
-.topic-list::-webkit-scrollbar {
+.card-list::-webkit-scrollbar {
     display: none;
 }
 
-.topic-item {
+.card-item {
     display: grid;
     gap: 0.5rem;
 }
 
-.topic-button {
+.card-button {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 0.7rem;
@@ -70,15 +70,15 @@
     text-align: left;
 }
 
-.topic-title {
+.card-title {
     min-width: 0;
 }
 
-.topic-marker {
+.card-marker {
     align-self: center;
 }
 
-.topic-content {
+.card-content {
     padding: 0 0.9rem 0.9rem;
 }
 
@@ -100,7 +100,7 @@
     line-height: 1;
 }
 
-.topic-description,
+.card-description,
 .side-bar-title,
 .side-bar-status {
     margin: 0;
@@ -115,12 +115,12 @@
         padding: 0.8rem;
     }
 
-    .topic-button {
+    .card-button {
         padding: 0.72rem 0.78rem;
         border-radius: 0.92rem;
     }
 
-    .topic-content {
+    .card-content {
         padding: 0 0.78rem 0.78rem;
     }
 
@@ -189,7 +189,7 @@
         max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 7rem);
     }
 
-    .side-bar.is-overlay-mode:not(.is-collapsed) .topic-list {
+    .side-bar.is-overlay-mode:not(.is-collapsed) .card-list {
         padding-right: 0;
     }
 }

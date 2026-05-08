@@ -1,6 +1,6 @@
 @import url("./base.css");
 @import url("./app-layout.css");
-@import url("./model-layout.css");
-@import url("./model.css");
+@import url("./card-viewer-layout.css");
+@import url("./card-viewer.css");
 @import url("./side-bar-layout.css");
 @import url("./side-bar.css");

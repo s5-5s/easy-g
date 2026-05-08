@@ -1,4 +1,4 @@
-import {RadomirUi} from "./radomir-ui.js";
+import {EasyGApp} from "./app/easy-g-app.js";
 
 const APP_ROOT_SELECTOR = "[data-app-root]";
 const SERVICE_WORKER_URL = new URL("../service-worker.js", import.meta.url);
@@ -12,16 +12,16 @@ if ("serviceWorker" in navigator) {
 }
 
 if (appRootElement instanceof HTMLElement) {
-    let radomirUi = new RadomirUi(appRootElement);
-    if (!appRootElement.contains(radomirUi.element)) {
-        appRootElement.replaceChildren(radomirUi.element);
+    let easyGApp = new EasyGApp(appRootElement);
+    if (!appRootElement.contains(easyGApp.element)) {
+        appRootElement.replaceChildren(easyGApp.element);
     }
-    radomirUi.initialize();
+    easyGApp.initialize();
 
     window.addEventListener(
         "beforeunload",
         () => {
-            radomirUi.destroy();
+            easyGApp.destroy();
         },
         {once: true}
     );
